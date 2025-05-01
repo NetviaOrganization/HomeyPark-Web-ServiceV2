@@ -7,10 +7,12 @@ import com.homeypark.web_service.parkings.domain.model.queries.GetParkingListByP
 import com.homeypark.web_service.parkings.domain.model.queries.GetParkingsByNearLatLngQuery;
 import com.homeypark.web_service.parkings.domain.services.ParkingQueryService;
 import com.homeypark.web_service.parkings.infrastructure.persistence.jpa.repositories.ParkingRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ParkingQueryServiceImpl implements ParkingQueryService {
 
     private final ParkingRepository parkingRepository;

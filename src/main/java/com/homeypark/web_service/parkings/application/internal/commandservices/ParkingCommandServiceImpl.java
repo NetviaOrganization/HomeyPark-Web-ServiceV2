@@ -1,5 +1,6 @@
 package com.homeypark.web_service.parkings.application.internal.commandservices;
 
+import com.homeypark.web_service.parkings.application.internal.outboundservices.acl.ExternalProfileService;
 import com.homeypark.web_service.parkings.domain.model.aggregates.Parking;
 import com.homeypark.web_service.parkings.domain.model.commands.CreateParkingCommand;
 import com.homeypark.web_service.parkings.domain.model.commands.DeleteParkingCommand;
@@ -13,17 +14,19 @@ import java.util.Optional;
 @Service
 public class ParkingCommandServiceImpl implements ParkingCommandService {
     private final ParkingRepository parkingRepository;
+    private final ExternalProfileService externalProfileService;
 
-    public ParkingCommandServiceImpl(ParkingRepository parkingRepository) {
+    public ParkingCommandServiceImpl(ParkingRepository parkingRepository, ExternalProfileService externalProfileService) {
         this.parkingRepository = parkingRepository;
+        this.externalProfileService = externalProfileService;
     }
 
     @Override
     public Optional<Parking> handle(CreateParkingCommand command) {
-        Parking parking = new Parking(command);
-
-        //Todo: check if user exists
-
+        if (!externalProfileService.checkProfileExistById(command.profileId().profileId())) {
+            throw new IllegalArgumentException("Host not found");
+        }
+        var parking = new Parking(command);
         try {
             var response = parkingRepository.save(parking);
             return Optional.of(response);

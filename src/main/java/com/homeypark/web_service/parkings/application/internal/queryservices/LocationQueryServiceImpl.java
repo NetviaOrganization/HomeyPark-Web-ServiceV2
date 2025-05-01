@@ -4,9 +4,11 @@ import com.homeypark.web_service.parkings.domain.model.entities.Location;
 import com.homeypark.web_service.parkings.domain.model.queries.GetAllLocationsQuery;
 import com.homeypark.web_service.parkings.domain.services.LocationQueryService;
 import com.homeypark.web_service.parkings.infrastructure.persistence.jpa.repositories.LocationRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class LocationQueryServiceImpl implements LocationQueryService {
 
     private final LocationRepository locationRepository;

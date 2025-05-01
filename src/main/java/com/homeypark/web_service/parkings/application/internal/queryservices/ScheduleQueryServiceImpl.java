@@ -4,9 +4,11 @@ import com.homeypark.web_service.parkings.domain.model.entities.Schedule;
 import com.homeypark.web_service.parkings.domain.model.queries.GetAllScheduleQuery;
 import com.homeypark.web_service.parkings.domain.services.ScheduleQueryService;
 import com.homeypark.web_service.parkings.infrastructure.persistence.jpa.repositories.ScheduleRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ScheduleQueryServiceImpl implements ScheduleQueryService {
 
     private final ScheduleRepository scheduleRepository;
