@@ -1,4 +1,4 @@
-package com.homeypark.web_service.reservations.aplication.internal.outboundservices.acl;
+package com.homeypark.web_service.parkings.application.internal.outboundservices.acl;
 
 import com.homeypark.web_service.user.interfaces.acl.ProfilesContextFacade;
 import org.springframework.stereotype.Service;
@@ -10,8 +10,7 @@ public class ExternalProfileService {
     public ExternalProfileService(ProfilesContextFacade userContextFacade) {
         this.userContextFacade = userContextFacade;
     }
-
-    public boolean checkProfileExistById(Long profileId) {
-        return userContextFacade.checkUserExistById(profileId);
+    public boolean checkProfileExistById(Long userId) {
+        return userContextFacade.checkUserExistById(userId);
     }
 }
