@@ -3,15 +3,15 @@ package com.homeypark.web_service.reservations.aplication.internal.outboundservi
 import com.homeypark.web_service.user.interfaces.acl.ProfilesContextFacade;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("reservationExternalProfileService")
 public class ExternalProfileService {
-    private final ProfilesContextFacade userContextFacade;
+    private final ProfilesContextFacade profilesContextFacade;
 
-    public ExternalProfileService(ProfilesContextFacade userContextFacade) {
-        this.userContextFacade = userContextFacade;
+    public ExternalProfileService(ProfilesContextFacade profilesContextFacade) {
+        this.profilesContextFacade = profilesContextFacade;
     }
 
     public boolean checkProfileExistById(Long profileId) {
-        return userContextFacade.checkUserExistById(profileId);
+        return profilesContextFacade.checkProfileExistById(profileId);
     }
 }

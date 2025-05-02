@@ -9,5 +9,4 @@ import java.util.List;
 
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
-    List<Profile> findByEmailAndPassword(String email, String password);
 }

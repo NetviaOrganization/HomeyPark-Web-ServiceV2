@@ -10,5 +10,4 @@ public record CreateReservationResource(
         Long guestId,
         Long hostId,
         Long parkingId,
-        Long vehicleId,
-        Long cardId) {}
+        Long vehicleId) {}

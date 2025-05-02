@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/location")
-@Tag(name = "Location", description = "Location Management Endpoints")
+@RequestMapping(value = "/parking")
+@Tag(name = "Parking", description = "Parking Management Endpoints")
 public class ParkingController {
     private final ParkingCommandService parkingCommandService;
     private final ParkingQueryService parkingQueryService;
@@ -41,7 +41,7 @@ public class ParkingController {
     }
 
     @PostMapping
-    public ResponseEntity<Parking> createUser(@RequestBody CreateParkingResource createParkingResource) {
+    public ResponseEntity<Parking> createParking(@RequestBody CreateParkingResource createParkingResource) {
         var createParkingCommand = CreateParkingCommandFromResourceAssembler.toCommandFromResource(createParkingResource);
 
         var parking = parkingCommandService.handle(createParkingCommand);
@@ -77,7 +77,7 @@ public class ParkingController {
         return ResponseEntity.ok(parking.get());
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/profile/{id}")
     public ResponseEntity<List<Parking>> getParkingListByProfileId(@PathVariable Long id) {
         GetParkingListByProfileId query = new GetParkingListByProfileId(id);
 
