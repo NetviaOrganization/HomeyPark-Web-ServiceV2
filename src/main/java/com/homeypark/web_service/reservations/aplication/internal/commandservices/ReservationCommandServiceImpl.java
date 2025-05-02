@@ -1,6 +1,8 @@
 package com.homeypark.web_service.reservations.aplication.internal.commandservices;
 
+import com.homeypark.web_service.reservations.aplication.internal.outboundservices.acl.ExternalParkingService;
 import com.homeypark.web_service.reservations.aplication.internal.outboundservices.acl.ExternalProfileService;
+import com.homeypark.web_service.reservations.aplication.internal.outboundservices.acl.ExternalVehicleService;
 import com.homeypark.web_service.reservations.domain.model.commands.CreateReservationCommand;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateReservationCommand;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateStatusCommand;
@@ -8,25 +10,28 @@ import com.homeypark.web_service.reservations.domain.model.entities.Reservation;
 import com.homeypark.web_service.reservations.domain.model.valueobject.Status;
 import com.homeypark.web_service.reservations.domain.services.ReservationCommandService;
 import com.homeypark.web_service.reservations.infrastructure.repositories.jpa.ReservationRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service
 public class ReservationCommandServiceImpl implements ReservationCommandService {
     private final ReservationRepository reservationRepository;
     private final ExternalProfileService externalProfileService;
+    private final ExternalVehicleService externalVehicleService;
+    private final ExternalParkingService externalParkingService;
 
-    public ReservationCommandServiceImpl(ReservationRepository reservationRepository, ExternalProfileService externalProfileService) {
-        this.reservationRepository = reservationRepository;
-        this.externalProfileService = externalProfileService;
-    }
 
     @Override
     public Optional<Reservation> handle(CreateReservationCommand command) {
         if (!externalProfileService.checkProfileExistById(command.guestId()) || !externalProfileService.checkProfileExistById(command.hostId())) {
             throw new IllegalArgumentException("Guest or Host not found");
         }
+        if (!externalVehicleService.checkVehicleExistById(command.guestId())) throw new IllegalArgumentException("Vehicle not found");
+        if (!externalParkingService.checkParkingExistById(command.guestId())) throw new IllegalArgumentException("Parking not found");
+
         var reservation = new Reservation(command);
         reservation.setStatus(Status.Pending);
         try {

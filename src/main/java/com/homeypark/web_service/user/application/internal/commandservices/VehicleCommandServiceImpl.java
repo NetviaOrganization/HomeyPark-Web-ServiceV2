@@ -25,11 +25,11 @@ public class VehicleCommandServiceImpl implements VehicleCommandService {
 
     @Override
     public Optional<Vehicle> handle(CreateVehicleCommand command) {
-        Optional<Profile> user = profileRepository.findById(command.userId());
+        Optional<Profile> profile = profileRepository.findById(command.profileId());
 
-        if (user.isPresent()) {
+        if (profile.isPresent()) {
             // Crear un nuevo vehículo usando el constructor que acepta CreateVehicleCommand
-            Vehicle vehicle = new Vehicle(command, user.get());
+            Vehicle vehicle = new Vehicle(command, profile.get());
             var response = vehicleRepository.save(vehicle);
             return Optional.of(response);
         }

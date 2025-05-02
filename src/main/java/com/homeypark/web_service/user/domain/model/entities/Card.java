@@ -25,7 +25,7 @@ public class Card {
     private String holder;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "profile_id", nullable = false)
     @JsonBackReference
     private Profile profile;
 

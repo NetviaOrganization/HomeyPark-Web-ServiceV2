@@ -3,7 +3,7 @@ package com.homeypark.web_service.user.application.internal.queryservices;
 import com.homeypark.web_service.user.domain.model.entities.Vehicle;
 import com.homeypark.web_service.user.domain.model.queries.GetAllVehiclesQuery;
 import com.homeypark.web_service.user.domain.model.queries.GetVehicleByIdQuery;
-import com.homeypark.web_service.user.domain.model.queries.GetVehiclesByUserIdQuery;
+import com.homeypark.web_service.user.domain.model.queries.GetVehiclesByProfileIdQuery;
 import com.homeypark.web_service.user.domain.services.VehicleQueryService;
 import com.homeypark.web_service.user.infrastructure.repositories.jpa.VehicleRepository;
 import org.springframework.stereotype.Service;
@@ -31,8 +31,8 @@ public class VehicleQueryServiceImpl implements VehicleQueryService {
     }
 
     @Override
-    public List<Vehicle> handle(GetVehiclesByUserIdQuery query) {
-        return vehicleRepository.findVehicleByUser_Id(query.userId());
+    public List<Vehicle> handle(GetVehiclesByProfileIdQuery query) {
+        return vehicleRepository.findVehicleByProfileId(query.profileId());
     }
 
 }

@@ -4,5 +4,5 @@ public record CreateCardCommand(Double numCard,
                                 Double cvv,
                                 String date,
                                 String holder,
-                                Long userId) {
+                                Long profileId) {
 }

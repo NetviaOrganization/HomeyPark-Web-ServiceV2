@@ -14,8 +14,7 @@ public class CreateReservationCommandFromResourceAssembler {
                 resource.guestId(),
                 resource.hostId(),
                 resource.parkingId(),
-                resource.vehicleId(),
-                resource.cardId()
+                resource.vehicleId()
         );
     }
 }

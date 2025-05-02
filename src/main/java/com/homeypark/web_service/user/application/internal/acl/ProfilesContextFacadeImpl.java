@@ -15,9 +15,9 @@ public class ProfilesContextFacadeImpl implements ProfilesContextFacade {
     }
 
     @Override
-    public boolean checkUserExistById(Long profileId) {
-        var getUserByIdQuery = new GetProfileByIdQuery(profileId);
-        var profile = profileQueryService.handle(getUserByIdQuery);
+    public boolean checkProfileExistById(Long profileId) {
+        var getProfileByIdQuery = new GetProfileByIdQuery(profileId);
+        var profile = profileQueryService.handle(getProfileByIdQuery);
         return profile.isPresent();
     }
 }

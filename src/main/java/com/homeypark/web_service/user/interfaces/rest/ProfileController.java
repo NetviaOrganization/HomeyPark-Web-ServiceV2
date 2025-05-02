@@ -22,54 +22,54 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/profiles")
 public class ProfileController {
-    private final ProfileQueryService userQueryService;
-    private final ProfileCommandService userCommandService;
+    private final ProfileQueryService profileQueryService;
+    private final ProfileCommandService profileCommandService;
 
-    public ProfileController(ProfileQueryService userQueryService, ProfileCommandService userCommandService) {
-        this.userQueryService = userQueryService;
-        this.userCommandService = userCommandService;
+    public ProfileController(ProfileQueryService profileQueryService, ProfileCommandService profileCommandService) {
+        this.profileQueryService = profileQueryService;
+        this.profileCommandService = profileCommandService;
     }
 
     @GetMapping
-    public ResponseEntity<List<ProfileResource>> getAllUsers() {
+    public ResponseEntity<List<ProfileResource>> getAllProfiles() {
 
-        var getAllUsersQuery = new GetAllProfilesQuery();
-        var users = userQueryService.handle(getAllUsersQuery).stream().map(ProfileResourceFromEntityAssembler::toResourceFromEntity).toList();
+        var getAllProfilesQuery = new GetAllProfilesQuery();
+        var profiles = profileQueryService.handle(getAllProfilesQuery).stream().map(ProfileResourceFromEntityAssembler::toResourceFromEntity).toList();
 
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return new ResponseEntity<>(profiles, HttpStatus.OK);
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProfileResource> getUserById(@PathVariable("id") Long id) {
-        var getUserByIdQuery = new GetProfileByIdQuery(id);
+    public ResponseEntity<ProfileResource> getProfileById(@PathVariable("id") Long id) {
+        var getProfileByIdQuery = new GetProfileByIdQuery(id);
 
-        var user = userQueryService.handle(getUserByIdQuery).map(ProfileResourceFromEntityAssembler::toResourceFromEntity);
+        var profile = profileQueryService.handle(getProfileByIdQuery).map(ProfileResourceFromEntityAssembler::toResourceFromEntity);
 
-        return user.map(u -> new ResponseEntity<>(u, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return profile.map(u -> new ResponseEntity<>(u, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<ProfileResource> createUser(@RequestBody CreateProfileResource createUserResource) {
-        var createUserCommand = CreateProfileCommandFromResourceAssembler.toCommandFromResource(createUserResource);
+    public ResponseEntity<ProfileResource> createProfile(@RequestBody CreateProfileResource createProfileResource) {
+        var createProfileCommand = CreateProfileCommandFromResourceAssembler.toCommandFromResource(createProfileResource);
 
-        var user = userCommandService.handle(createUserCommand).map(ProfileResourceFromEntityAssembler::toResourceFromEntity);
+        var profile = profileCommandService.handle(createProfileCommand).map(ProfileResourceFromEntityAssembler::toResourceFromEntity);
 
-        return user.map(u -> new ResponseEntity<>(u, HttpStatus.CREATED)).orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        return profile.map(u -> new ResponseEntity<>(u, HttpStatus.CREATED)).orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProfileResource> updateUser(@PathVariable Long id, @RequestBody UpdateProfileResource updateUserResource) {
-        var updateUserCommand = UpdateProfileCommandFromResource.toCommandFromResource(id, updateUserResource);
-        var updatedUser = userCommandService.handle(updateUserCommand).map(ProfileResourceFromEntityAssembler::toResourceFromEntity);
-        return updatedUser.map(r -> new ResponseEntity<>(r, HttpStatus.OK))
+    public ResponseEntity<ProfileResource> updateProfile(@PathVariable Long id, @RequestBody UpdateProfileResource updateProfileResource) {
+        var updateProfileCommand = UpdateProfileCommandFromResource.toCommandFromResource(id, updateProfileResource);
+        var updatedProfile = profileCommandService.handle(updateProfileCommand).map(ProfileResourceFromEntityAssembler::toResourceFromEntity);
+        return updatedProfile.map(r -> new ResponseEntity<>(r, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id){
-        var deleteUserCommand = new DeleteProfileCommand(id);
-        userCommandService.handle(deleteUserCommand);
+    public ResponseEntity<?> deleteProfile(@PathVariable Long id){
+        var deleteProfileCommand = new DeleteProfileCommand(id);
+        profileCommandService.handle(deleteProfileCommand);
         return ResponseEntity.noContent().build();
     }
 

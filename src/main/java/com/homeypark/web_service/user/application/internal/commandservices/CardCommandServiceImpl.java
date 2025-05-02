@@ -25,12 +25,12 @@ public class CardCommandServiceImpl implements CardCommandService {
     public Optional<Card> handle(CreateCardCommand command) {
         Card card = new Card(command);
         try {
-            var user = profileRepository.findById(command.userId());
+            var profile = profileRepository.findById(command.profileId());
 
-            user.map((p)-> {
+            profile.map((p)-> {
                 card.setProfile(p);
                 return p;
-            }).orElseThrow(()-> new IllegalArgumentException("User not founded"));
+            }).orElseThrow(()-> new IllegalArgumentException("Profile not founded"));
 
             var response = cardRepository.save(card);
             return Optional.of(response);

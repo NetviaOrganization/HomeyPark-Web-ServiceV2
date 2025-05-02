@@ -3,7 +3,7 @@ package com.homeypark.web_service.reservations.domain.model.entities;
 import com.homeypark.web_service.reservations.domain.model.commands.CreateReservationCommand;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateReservationCommand;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateStatusCommand;
-import com.homeypark.web_service.reservations.domain.model.valueobject.Status;
+import com.homeypark.web_service.reservations.domain.model.valueobject.*;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,16 +31,17 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private Long guestId;
+    @Embedded
+    private GuestId guestId;
 
-    private Long hostId;
+    @Embedded
+    private HostId hostId;
 
-    private Long parkingId;
+    @Embedded
+    private ParkingId parkingId;
 
-    private Long vehicleId;
-
-    private Long cardId;
-
+    @Embedded
+    private VehicleId vehicleId;
 
     @CreationTimestamp
     private Instant createdAt;
@@ -53,11 +54,10 @@ public class Reservation {
         this.totalFare = command.totalFare();
         this.startTime = command.startTime();
         this.endTime = command.endTime();
-        this.hostId = command.hostId();
-        this.guestId = command.guestId();
-        this.parkingId = command.parkingId();
-        this.vehicleId = command.vehicleId();
-        this.cardId = command.cardId();
+        this.hostId = new HostId(command.hostId());
+        this.guestId = new GuestId(command.guestId());
+        this.parkingId = new ParkingId(command.parkingId());
+        this.vehicleId = new VehicleId(command.vehicleId());
         this.status = Status.Pending;
     }
     public Reservation updatedReservation(UpdateReservationCommand command){

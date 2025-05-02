@@ -1,4 +1,4 @@
 package com.homeypark.web_service.user.domain.model.commands;
 
-public record DeleteProfileCommand(Long userId) {
+public record DeleteProfileCommand(Long profileId) {
 }

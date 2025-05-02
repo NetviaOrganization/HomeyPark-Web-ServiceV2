@@ -38,7 +38,7 @@ public class ProfileCommandServiceImpl implements ProfileCommandService {
 
     @Override
     public Optional<Profile> handle(UpdateProfileCommand command) {
-        var result = profileRepository.findById(command.userId());
+        var result = profileRepository.findById(command.profileId());
         if (result.isEmpty())
             throw new IllegalArgumentException("User does not exist");
         var userToUpdate = result.get();
@@ -52,8 +52,8 @@ public class ProfileCommandServiceImpl implements ProfileCommandService {
 
     @Override
     public void handle(DeleteProfileCommand command){
-        if (!profileRepository.existsById(command.userId())) throw new IllegalArgumentException("User does not exist");
-        profileRepository.deleteById(command.userId());
+        if (!profileRepository.existsById(command.profileId())) throw new IllegalArgumentException("User does not exist");
+        profileRepository.deleteById(command.profileId());
         System.out.println("User Delete");
     }
 
