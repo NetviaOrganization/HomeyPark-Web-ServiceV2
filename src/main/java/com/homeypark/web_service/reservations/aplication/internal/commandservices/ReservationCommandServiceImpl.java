@@ -6,12 +6,15 @@ import com.homeypark.web_service.reservations.aplication.internal.outboundservic
 import com.homeypark.web_service.reservations.domain.model.commands.CreateReservationCommand;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateReservationCommand;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateStatusCommand;
-import com.homeypark.web_service.reservations.domain.model.entities.Reservation;
+import com.homeypark.web_service.reservations.domain.model.aggregates.Reservation;
 import com.homeypark.web_service.reservations.domain.model.valueobject.Status;
 import com.homeypark.web_service.reservations.domain.services.ReservationCommandService;
+import com.homeypark.web_service.reservations.infrastructure.external.ImageUploadService;
+import com.homeypark.web_service.reservations.infrastructure.external.ImgbbResponse;
 import com.homeypark.web_service.reservations.infrastructure.repositories.jpa.ReservationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -22,19 +25,31 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
     private final ExternalProfileService externalProfileService;
     private final ExternalVehicleService externalVehicleService;
     private final ExternalParkingService externalParkingService;
-
+    private final ImageUploadService imageUploadService;
 
     @Override
-    public Optional<Reservation> handle(CreateReservationCommand command) {
+    public Optional<Reservation> handle(CreateReservationCommand command, MultipartFile file) {
         if (!externalProfileService.checkProfileExistById(command.guestId()) || !externalProfileService.checkProfileExistById(command.hostId())) {
             throw new IllegalArgumentException("Guest or Host not found");
         }
+        if (file.isEmpty()) throw new IllegalArgumentException("File is empty");
         if (!externalVehicleService.checkVehicleExistById(command.guestId())) throw new IllegalArgumentException("Vehicle not found");
         if (!externalParkingService.checkParkingExistById(command.guestId())) throw new IllegalArgumentException("Parking not found");
 
         var reservation = new Reservation(command);
         reservation.setStatus(Status.Pending);
         try {
+
+            ImgbbResponse imgbbResponse = imageUploadService.uploadImage(file).block();
+
+            if (imgbbResponse != null && imgbbResponse.success()) {
+                reservation.setPaymentReceiptUrl(imgbbResponse.data().url());
+                reservation.setPaymentReceiptDeleteUrl(imgbbResponse.data().deleteUrl());
+            } else {
+                System.err.println("Error al cargar la imagen o respuesta no exitosa de ImgBB.");
+                return Optional.empty();
+            }
+
             var response = reservationRepository.save(reservation);
             return Optional.of(response);
         } catch (Exception e) {

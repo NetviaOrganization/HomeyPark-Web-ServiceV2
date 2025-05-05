@@ -1,6 +1,6 @@
 package com.homeypark.web_service.reservations.domain.services;
 
-import com.homeypark.web_service.reservations.domain.model.entities.Reservation;
+import com.homeypark.web_service.reservations.domain.model.aggregates.Reservation;
 import com.homeypark.web_service.reservations.domain.model.queries.*;
 
 import java.util.List;

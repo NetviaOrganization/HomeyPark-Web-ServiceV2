@@ -1,6 +1,6 @@
 package com.homeypark.web_service.reservations.aplication.internal.queryservices;
 
-import com.homeypark.web_service.reservations.domain.model.entities.Reservation;
+import com.homeypark.web_service.reservations.domain.model.aggregates.Reservation;
 import com.homeypark.web_service.reservations.domain.model.queries.*;
 import com.homeypark.web_service.reservations.domain.model.valueobject.Status;
 import com.homeypark.web_service.reservations.domain.services.ReservationQueryService;

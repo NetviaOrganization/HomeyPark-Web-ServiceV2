@@ -1,7 +1,7 @@
 package com.homeypark.web_service.reservations.interfaces.rest.transformers;
 
 
-import com.homeypark.web_service.reservations.domain.model.entities.Reservation;
+import com.homeypark.web_service.reservations.domain.model.aggregates.Reservation;
 import com.homeypark.web_service.reservations.interfaces.rest.resources.ReservationResource;
 
 public class ReservationResourceFromEntityAssembler {
