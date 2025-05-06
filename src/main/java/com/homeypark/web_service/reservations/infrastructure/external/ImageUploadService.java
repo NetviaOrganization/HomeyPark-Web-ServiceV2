@@ -2,6 +2,7 @@ package com.homeypark.web_service.reservations.infrastructure.external;
 
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -35,12 +36,8 @@ public class ImageUploadService {
 
         builder.part("key", apiKey);
 
-        try {
-            builder.part("image", file.getInputStream())
-                    .contentType(MediaType.IMAGE_JPEG);
-        } catch (IOException e) {
-            return Mono.error(new RuntimeException("Error al leer el archivo de imagen", e));
-        }
+        Resource imageResource = file.getResource();
+        builder.part("image", imageResource);
 
         MultiValueMap<String, HttpEntity<?>> multipartBody = builder.build();
 

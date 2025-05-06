@@ -44,8 +44,9 @@ public class ReservationController {
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ReservationResource> createReservation(
-            @RequestPart("reservation") CreateReservationResource createReservationResource,
-            @RequestPart("file") MultipartFile file) {
+            @RequestPart("file") MultipartFile file,
+            @RequestPart("reservation") CreateReservationResource createReservationResource
+            ) {
 
         var createReservationCommand = CreateReservationCommandFromResourceAssembler.toCommandFromResource(createReservationResource);
 

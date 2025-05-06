@@ -16,7 +16,9 @@ public class ReservationResourceFromEntityAssembler {
                 entity.getGuestId().guestId(),
                 entity.getHostId().hostId(),
                 entity.getParkingId().parkingId(),
-                entity.getVehicleId().vehicleId()
+                entity.getVehicleId().vehicleId(),
+                entity.getPaymentReceiptUrl(),
+                entity.getPaymentReceiptDeleteUrl()
         );
     }
 }

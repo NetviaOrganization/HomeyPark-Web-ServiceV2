@@ -12,6 +12,7 @@ import com.homeypark.web_service.reservations.domain.services.ReservationCommand
 import com.homeypark.web_service.reservations.infrastructure.external.ImageUploadService;
 import com.homeypark.web_service.reservations.infrastructure.external.ImgbbResponse;
 import com.homeypark.web_service.reservations.infrastructure.repositories.jpa.ReservationRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,7 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
     private final ExternalParkingService externalParkingService;
     private final ImageUploadService imageUploadService;
 
+    @Transactional
     @Override
     public Optional<Reservation> handle(CreateReservationCommand command, MultipartFile file) {
         if (!externalProfileService.checkProfileExistById(command.guestId()) || !externalProfileService.checkProfileExistById(command.hostId())) {
