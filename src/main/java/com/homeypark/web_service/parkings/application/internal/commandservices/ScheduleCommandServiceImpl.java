@@ -6,9 +6,11 @@ import com.homeypark.web_service.parkings.domain.model.entities.Schedule;
 import com.homeypark.web_service.parkings.domain.services.ScheduleCommandService;
 import com.homeypark.web_service.parkings.infrastructure.persistence.jpa.repositories.ParkingRepository;
 import com.homeypark.web_service.parkings.infrastructure.persistence.jpa.repositories.ScheduleRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class ScheduleCommandServiceImpl implements ScheduleCommandService {
     private final ScheduleRepository scheduleRepository;
     private final ParkingRepository parkingRepository;
