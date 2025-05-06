@@ -3,9 +3,7 @@ package com.homeypark.web_service.user.domain.model.aggregates;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.homeypark.web_service.user.domain.model.commands.CreateProfileCommand;
 import com.homeypark.web_service.user.domain.model.commands.UpdateProfileCommand;
-import com.homeypark.web_service.user.domain.model.entities.Card;
 import com.homeypark.web_service.user.domain.model.entities.Vehicle;
-import com.homeypark.web_service.user.domain.model.valueobject.IdCardType;
 import com.homeypark.web_service.user.domain.model.valueobject.ProfileType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -30,10 +28,6 @@ public class Profile {
     private String address;
     @Email
     private String email;
-    @Enumerated(EnumType.STRING)
-    private IdCardType idCardType;
-
-    private String idCardNumber;
 
     @Enumerated(EnumType.STRING)
     private ProfileType type;
@@ -43,10 +37,6 @@ public class Profile {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
     @JsonManagedReference
     private List<Vehicle> vehicles = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile", orphanRemoval = true)
-    @JsonManagedReference
-    private List<Card> cards = new ArrayList<>();
 
     public Profile(Long id, String lastName, String name, LocalDateTime dateCreated) {
         this.id = id;
@@ -60,8 +50,6 @@ public class Profile {
         this.name = command.name();
         this.lastName = command.lastName();
         this.email = command.email();
-        this.idCardType = IdCardType.valueOf(command.idCardType());
-        this.idCardNumber = command.idCardNumber();
         this.address = command.address();
         this.type = ProfileType.valueOf(command.type());
         this.vehicles = new ArrayList<>();
@@ -71,8 +59,6 @@ public class Profile {
         this.name = command.name();
         this.lastName = command.lastName();
         this.email = command.email();
-        this.idCardType = IdCardType.valueOf(command.idCardType());
-        this.idCardNumber = command.idCardNumber();
         this.address = command.address();
         return this;
     }
