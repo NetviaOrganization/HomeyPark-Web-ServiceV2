@@ -1,8 +1,8 @@
-package com.homeypark.web_service.user.application.internal.acl;
+package com.homeypark.web_service.vehicles.application.internal.acl;
 
-import com.homeypark.web_service.user.domain.model.queries.GetVehicleByIdQuery;
-import com.homeypark.web_service.user.domain.services.VehicleQueryService;
-import com.homeypark.web_service.user.interfaces.acl.VehiclesContextFacade;
+import com.homeypark.web_service.vehicles.domain.model.queries.GetVehicleByIdQuery;
+import com.homeypark.web_service.vehicles.domain.services.VehicleQueryService;
+import com.homeypark.web_service.vehicles.interfaces.acl.VehiclesContextFacade;
 import org.springframework.stereotype.Service;
 
 @Service

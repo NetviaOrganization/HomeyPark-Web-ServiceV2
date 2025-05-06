@@ -1,4 +1,4 @@
-package com.homeypark.web_service.user.interfaces.rest.resources;
+package com.homeypark.web_service.vehicles.interfaces.rest.resources;
 
 public record CreateVehicleResource(
         String licensePlate,

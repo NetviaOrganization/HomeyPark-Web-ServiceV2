@@ -1,8 +1,8 @@
-package com.homeypark.web_service.user.interfaces.rest.transformers;
+package com.homeypark.web_service.vehicles.interfaces.rest.transform;
 
 
-import com.homeypark.web_service.user.domain.model.entities.Vehicle;
-import com.homeypark.web_service.user.interfaces.rest.resources.VehicleResource;
+import com.homeypark.web_service.vehicles.domain.model.aggregates.Vehicle;
+import com.homeypark.web_service.vehicles.interfaces.rest.resources.VehicleResource;
 
 public class VehicleResourceFromEntityAssembler {
     public static VehicleResource toResourceFromEntity(Vehicle entity) {
@@ -11,7 +11,7 @@ public class VehicleResourceFromEntityAssembler {
                 entity.getLicensePlate(),
                 entity.getBrand(),
                 entity.getModel(),
-                entity.getProfile().getId()
+                entity.getProfileId().toString()
         );
     }
 }

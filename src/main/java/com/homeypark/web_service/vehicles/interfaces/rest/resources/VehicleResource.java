@@ -1,4 +1,4 @@
-package com.homeypark.web_service.user.interfaces.rest.resources;
+package com.homeypark.web_service.vehicles.interfaces.rest.resources;
 
 
 public record VehicleResource(
@@ -6,6 +6,6 @@ public record VehicleResource(
         String licensePlate,
         String model,
         String brand,
-        Long profileId
+        String profileId
 ) {
 }

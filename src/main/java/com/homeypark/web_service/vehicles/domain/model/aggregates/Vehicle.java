@@ -1,10 +1,10 @@
-package com.homeypark.web_service.user.domain.model.entities;
+package com.homeypark.web_service.vehicles.domain.model.aggregates;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.homeypark.web_service.user.domain.model.aggregates.Profile;
-import com.homeypark.web_service.user.domain.model.commands.CreateVehicleCommand;
-import com.homeypark.web_service.user.domain.model.commands.UpdateVehicleCommand;
+import com.homeypark.web_service.vehicles.domain.model.valueobjects.ProfileId;
+import com.homeypark.web_service.vehicles.domain.model.commands.CreateVehicleCommand;
+import com.homeypark.web_service.vehicles.domain.model.commands.UpdateVehicleCommand;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,24 +23,22 @@ public class Vehicle {
     private String model;
     private String brand;
 
-    @ManyToOne()
-    @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
-    private Profile profile;
+    @Embedded
+    private ProfileId profileId;
 
-    public Vehicle(String licensePlate, String model, String brand, Profile profile) {
+    public Vehicle(String licensePlate, String model, String brand, Long profileId) {
         this.licensePlate = licensePlate;
         this.model = model;
         this.brand = brand;
-        this.profile = profile;
+        this.profileId = new ProfileId(profileId);
     }
 
 
-    public Vehicle(CreateVehicleCommand command, Profile profile) {
+    public Vehicle(CreateVehicleCommand command) {
         this.licensePlate = command.licensePlate();
         this.model = command.model();
         this.brand = command.brand();
-        this.profile = profile;
+        this.profileId = new ProfileId(command.profileId());
     }
 
     public Vehicle updatedVehicle(UpdateVehicleCommand command) {

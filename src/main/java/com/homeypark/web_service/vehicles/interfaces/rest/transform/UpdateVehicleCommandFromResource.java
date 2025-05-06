@@ -1,7 +1,7 @@
-package com.homeypark.web_service.user.interfaces.rest.transformers;
+package com.homeypark.web_service.vehicles.interfaces.rest.transform;
 
-import com.homeypark.web_service.user.domain.model.commands.UpdateVehicleCommand;
-import com.homeypark.web_service.user.interfaces.rest.resources.UpdateVehicleResource;
+import com.homeypark.web_service.vehicles.domain.model.commands.UpdateVehicleCommand;
+import com.homeypark.web_service.vehicles.interfaces.rest.resources.UpdateVehicleResource;
 
 public class UpdateVehicleCommandFromResource {
     public static UpdateVehicleCommand toCommandFromResource(Long vehicleId, UpdateVehicleResource resource) {

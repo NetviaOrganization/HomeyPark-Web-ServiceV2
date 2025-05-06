@@ -1,7 +1,7 @@
-package com.homeypark.web_service.user.interfaces.rest.transformers;
+package com.homeypark.web_service.vehicles.interfaces.rest.transform;
 
-import com.homeypark.web_service.user.domain.model.commands.CreateVehicleCommand;
-import com.homeypark.web_service.user.interfaces.rest.resources.CreateVehicleResource;
+import com.homeypark.web_service.vehicles.domain.model.commands.CreateVehicleCommand;
+import com.homeypark.web_service.vehicles.interfaces.rest.resources.CreateVehicleResource;
 
 public class CreateVehicleCommandFromResourceAssembler {
     public static CreateVehicleCommand toCommandFromResource(CreateVehicleResource resource) {
