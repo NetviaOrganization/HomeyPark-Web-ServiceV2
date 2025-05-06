@@ -1,6 +1,6 @@
 package com.homeypark.web_service.reservations.infrastructure.repositories.jpa;
 
-import com.homeypark.web_service.reservations.domain.model.entities.Reservation;
+import com.homeypark.web_service.reservations.domain.model.aggregates.Reservation;
 import com.homeypark.web_service.reservations.domain.model.valueobject.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

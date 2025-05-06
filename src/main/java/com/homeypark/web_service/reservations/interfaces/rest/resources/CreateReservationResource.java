@@ -1,5 +1,7 @@
 package com.homeypark.web_service.reservations.interfaces.rest.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 
 public record CreateReservationResource(

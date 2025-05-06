@@ -1,4 +1,4 @@
-package com.homeypark.web_service.reservations.domain.model.entities;
+package com.homeypark.web_service.reservations.domain.model.aggregates;
 
 import com.homeypark.web_service.reservations.domain.model.commands.CreateReservationCommand;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateReservationCommand;
@@ -6,13 +6,17 @@ import com.homeypark.web_service.reservations.domain.model.commands.UpdateStatus
 import com.homeypark.web_service.reservations.domain.model.valueobject.*;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Data
 @Entity
 @NoArgsConstructor
@@ -26,6 +30,10 @@ public class Reservation {
     private Double totalFare;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+
+    private String paymentReceiptUrl;
+    private String paymentReceiptDeleteUrl;
+
 
 
     @Enumerated(EnumType.STRING)
@@ -71,4 +79,6 @@ public class Reservation {
         this.status = command.status();
         return this;
     }
+
+
 }

@@ -1,6 +1,5 @@
 package com.homeypark.web_service.reservations.interfaces.rest;
 
-import com.homeypark.web_service.reservations.domain.model.entities.Reservation;
 import com.homeypark.web_service.reservations.domain.model.queries.*;
 import com.homeypark.web_service.reservations.domain.services.ReservationCommandService;
 import com.homeypark.web_service.reservations.domain.services.ReservationQueryService;
@@ -13,8 +12,10 @@ import com.homeypark.web_service.reservations.interfaces.rest.transformers.Reser
 import com.homeypark.web_service.reservations.interfaces.rest.transformers.UpdateReservationCommandFromResourceAssembler;
 import com.homeypark.web_service.reservations.interfaces.rest.transformers.UpdateStatusCommandFromResourceAssembler;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -41,15 +42,21 @@ public class ReservationController {
      return new ResponseEntity<>(reservationList,HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<ReservationResource> createReservation(@RequestBody CreateReservationResource createReservationResource) {
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ReservationResource> createReservation(
+            @RequestPart("file") MultipartFile file,
+            @RequestPart("reservation") CreateReservationResource createReservationResource
+            ) {
+
         var createReservationCommand = CreateReservationCommandFromResourceAssembler.toCommandFromResource(createReservationResource);
 
-        var reservation = reservationCommandService.handle(createReservationCommand)
+        var reservation = reservationCommandService.handle(createReservationCommand, file)
                 .map(ReservationResourceFromEntityAssembler::toResourceFromEntity);
 
-        return reservation.map(r -> new ResponseEntity<>(r, HttpStatus.CREATED)).orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        return reservation.map(r -> new ResponseEntity<>(r, HttpStatus.CREATED))
+                .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<ReservationResource> updateReservation(@PathVariable Long id, @RequestBody UpdateReservationResource updateReservationResource) {
         var updateReservationCommand = UpdateReservationCommandFromResourceAssembler.toCommandFromResource(id, updateReservationResource);

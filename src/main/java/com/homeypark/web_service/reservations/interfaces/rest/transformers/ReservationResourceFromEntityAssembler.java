@@ -1,7 +1,7 @@
 package com.homeypark.web_service.reservations.interfaces.rest.transformers;
 
 
-import com.homeypark.web_service.reservations.domain.model.entities.Reservation;
+import com.homeypark.web_service.reservations.domain.model.aggregates.Reservation;
 import com.homeypark.web_service.reservations.interfaces.rest.resources.ReservationResource;
 
 public class ReservationResourceFromEntityAssembler {
@@ -16,7 +16,9 @@ public class ReservationResourceFromEntityAssembler {
                 entity.getGuestId().guestId(),
                 entity.getHostId().hostId(),
                 entity.getParkingId().parkingId(),
-                entity.getVehicleId().vehicleId()
+                entity.getVehicleId().vehicleId(),
+                entity.getPaymentReceiptUrl(),
+                entity.getPaymentReceiptDeleteUrl()
         );
     }
 }

@@ -13,6 +13,8 @@ public record ReservationResource(
         Long guestId,
         Long hostId,
         Long parkingId,
-        Long vehicleId
+        Long vehicleId,
+        String paymentReceiptUrl,
+        String paymentReceiptDeleteUrl
 ) {
 }
