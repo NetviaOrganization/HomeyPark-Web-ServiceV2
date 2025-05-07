@@ -1,9 +1,9 @@
 package com.homeypark.web_service.parkings.application.internal.outboundservices.acl;
 
-import com.homeypark.web_service.user.interfaces.acl.ProfilesContextFacade;
+import com.homeypark.web_service.profiles.interfaces.acl.ProfilesContextFacade;
 import org.springframework.stereotype.Service;
 
-@Service("parkinExternalProfileService")
+@Service("parkingExternalProfileService")
 public class ExternalProfileService {
     private final ProfilesContextFacade userContextFacade;
 

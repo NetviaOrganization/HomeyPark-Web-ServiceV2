@@ -28,10 +28,11 @@ public class LocationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Location> updateLocation(@PathVariable Long id, @RequestBody UpdateLocationResource updateLocationResource){
+    public ResponseEntity<LocationResource> updateLocation(@PathVariable Long id, @RequestBody UpdateLocationResource updateLocationResource) {
         var updateLocationCommand = UpdateLocationCommandFromResourceAssembler.toCommandFromResource(id, updateLocationResource);
         var updatedLocation = locationCommandService.handle(updateLocationCommand);
-        return updatedLocation.map(p -> new ResponseEntity<>(p, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        var resource = LocationResourceFromEntityAssembler.toResourceFromEntity(updatedLocation.orElseThrow(() -> new IllegalArgumentException("Location not found")));
+        return new ResponseEntity<>(resource, HttpStatus.OK);
     }
 
     @GetMapping

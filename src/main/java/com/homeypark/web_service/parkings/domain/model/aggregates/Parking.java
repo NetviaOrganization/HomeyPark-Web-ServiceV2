@@ -54,7 +54,7 @@ public class Parking {
     }
 
     public Parking(CreateParkingCommand command) {
-        this.profileId = command.profileId();
+        this.profileId = new ProfileId(command.profileId());
         this.width = command.width();
         this.length = command.length();
         this.height = command.height();

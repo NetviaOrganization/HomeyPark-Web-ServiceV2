@@ -43,9 +43,7 @@ public class ParkingController {
     @PostMapping
     public ResponseEntity<Parking> createParking(@RequestBody CreateParkingResource createParkingResource) {
         var createParkingCommand = CreateParkingCommandFromResourceAssembler.toCommandFromResource(createParkingResource);
-
         var parking = parkingCommandService.handle(createParkingCommand);
-
         return parking.map(p -> new ResponseEntity<>(p, HttpStatus.CREATED)).orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
