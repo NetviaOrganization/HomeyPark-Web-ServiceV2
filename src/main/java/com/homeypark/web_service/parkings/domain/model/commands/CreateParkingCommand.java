@@ -3,7 +3,7 @@ package com.homeypark.web_service.parkings.domain.model.commands;
 import com.homeypark.web_service.parkings.domain.model.valueobjects.ProfileId;
 
 public record CreateParkingCommand(
-        ProfileId profileId,
+        Long profileId,
         Double width,
         Double length,
         Double height,
@@ -16,7 +16,6 @@ public record CreateParkingCommand(
         String street,
         String district,
         String city,
-        String coordinates,
         Double latitude,
         Double longitude
 ) {
@@ -53,9 +52,6 @@ public record CreateParkingCommand(
         }
         if (city == null || city.isBlank()) {
             throw new IllegalArgumentException("City cannot be null or empty");
-        }
-        if (coordinates == null || coordinates.isBlank()) {
-            throw new IllegalArgumentException("Coordinates cannot be null or empty");
         }
         if (latitude == null || latitude < -90 || latitude > 90) {
             throw new IllegalArgumentException("Latitude must be between -90 and 90");

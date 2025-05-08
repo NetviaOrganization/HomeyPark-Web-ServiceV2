@@ -18,7 +18,6 @@ public class CreateParkingCommandFromResourceAssembler {
                 resource.street(),
                 resource.district(),
                 resource.city(),
-                resource.coordinates(),
                 resource.latitude(),
                 resource.longitude()
         );

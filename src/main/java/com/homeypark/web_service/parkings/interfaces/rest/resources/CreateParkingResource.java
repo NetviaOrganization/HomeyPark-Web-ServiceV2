@@ -3,7 +3,7 @@ package com.homeypark.web_service.parkings.interfaces.rest.resources;
 import com.homeypark.web_service.parkings.domain.model.valueobjects.ProfileId;
 
 public record CreateParkingResource(
-        ProfileId profileId,
+        Long profileId,
         Double width,
         Double length,
         Double height,

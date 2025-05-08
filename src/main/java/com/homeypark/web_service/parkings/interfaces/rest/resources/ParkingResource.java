@@ -15,7 +15,6 @@ public record ParkingResource(
         String street,
         String district,
         String city,
-        String coordinates,
         String latitude,
         String longitude,
         String day,

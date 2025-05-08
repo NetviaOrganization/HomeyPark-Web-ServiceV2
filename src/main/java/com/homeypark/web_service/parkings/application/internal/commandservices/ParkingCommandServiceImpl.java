@@ -23,7 +23,7 @@ public class ParkingCommandServiceImpl implements ParkingCommandService {
 
     @Override
     public Optional<Parking> handle(CreateParkingCommand command) {
-        if (!externalProfileService.checkProfileExistById(command.profileId().profileId())) {
+        if (!externalProfileService.checkProfileExistById(command.profileId())) {
             throw new IllegalArgumentException("Host not found");
         }
         var parking = new Parking(command);

@@ -11,4 +11,8 @@ public record ProfileId(Long profileId) {
     }
 
     public ProfileId() { this(0L); }
+
+    public long profileIdAsPrimitive() {
+        return profileId != null ? profileId : 0L;
+    }
 }
