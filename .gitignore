@@ -31,3 +31,13 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignorar el directorio .github
+.github/
+
+# Ignorar todos los archivos .env
+*.env
+
+# Ignorar archivos relacionados con docker-compose
+docker-compose.yml
+docker-compose.override.yml
