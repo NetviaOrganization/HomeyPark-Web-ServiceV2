@@ -1,12 +1,12 @@
 package com.homeypark.web_service.parkings.domain.model.commands;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public record CreateScheduleCommand(
         Long parkingId,
         String day,
-        LocalDateTime startTime,
-        LocalDateTime endTime
+        LocalTime startTime,
+        LocalTime endTime
 ) {
     public CreateScheduleCommand {
         if (day == null || day.isBlank()) {
@@ -17,6 +17,9 @@ public record CreateScheduleCommand(
         }
         if (endTime == null) {
             throw new IllegalArgumentException("End time cannot be null");
+        }
+        if (startTime.isAfter(endTime)) {
+            throw new IllegalArgumentException("Start time cannot be after end time");
         }
     }
 }

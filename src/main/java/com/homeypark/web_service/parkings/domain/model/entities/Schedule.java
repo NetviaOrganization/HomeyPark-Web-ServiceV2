@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.homeypark.web_service.parkings.domain.model.aggregates.Parking;
 import com.homeypark.web_service.parkings.domain.model.commands.CreateScheduleCommand;
 import com.homeypark.web_service.parkings.domain.model.commands.UpdateScheduleCommand;
+import com.homeypark.web_service.parkings.domain.model.valueobjects.WeekDay;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,18 +27,19 @@ public class Schedule {
     @JsonBackReference
     private Parking parking;
 
-    private String day;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    @Enumerated(EnumType.STRING)
+    private WeekDay day;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
     public Schedule(CreateScheduleCommand command) {
-        this.day = command.day();
+        this.day = WeekDay.valueOf(command.day());
         this.startTime = command.startTime();
         this.endTime = command.endTime();
     }
 
     public Schedule updatedSchedule(UpdateScheduleCommand command) {
-        this.day = command.day();
+        this.day = WeekDay.valueOf(command.day());
         this.startTime = command.startTime();
         this.endTime = command.endTime();
         return this;

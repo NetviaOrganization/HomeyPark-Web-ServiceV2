@@ -2,6 +2,7 @@ package com.homeypark.web_service.reservations.application.internal.commandservi
 
 import com.homeypark.web_service.reservations.application.internal.outboundservices.acl.ExternalParkingService;
 import com.homeypark.web_service.reservations.application.internal.outboundservices.acl.ExternalProfileService;
+import com.homeypark.web_service.reservations.application.internal.outboundservices.acl.ExternalScheduleService;
 import com.homeypark.web_service.reservations.application.internal.outboundservices.acl.ExternalVehicleService;
 import com.homeypark.web_service.reservations.domain.model.commands.CreateReservationCommand;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateReservationCommand;
@@ -27,6 +28,7 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
     private final ExternalVehicleService externalVehicleService;
     private final ExternalParkingService externalParkingService;
     private final ImageUploadService imageUploadService;
+    private final ExternalScheduleService externalScheduleService;
 
     @Transactional
     @Override
@@ -38,10 +40,18 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
         if (!externalVehicleService.checkVehicleExistById(command.guestId())) throw new IllegalArgumentException("Vehicle not found");
         if (!externalParkingService.checkParkingExistById(command.guestId())) throw new IllegalArgumentException("Parking not found");
 
+        if (!externalScheduleService.doesScheduleEncloseTimeRange(command.startTime().getDayOfWeek().name(), command.startTime().toLocalTime(), command.endTime().toLocalTime())) {
+            throw new IllegalArgumentException("Schedule does not enclose the time range");
+        }
+
+        if (reservationRepository.existsByOverlap(command.startTime(), command.endTime())) {
+            throw new IllegalArgumentException("Reservation time overlaps with an existing reservation");
+        }
+
+
         var reservation = new Reservation(command);
         reservation.setStatus(Status.Pending);
         try {
-
             ImgbbResponse imgbbResponse = imageUploadService.uploadImage(file).block();
 
             if (imgbbResponse != null && imgbbResponse.success()) {
@@ -65,6 +75,15 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
         var result = reservationRepository.findById(command.reservationId());
         if (result.isEmpty())
             throw new IllegalArgumentException("Reservation does not exist");
+
+        if (!externalScheduleService.doesScheduleEncloseTimeRange(command.startTime().getDayOfWeek().name(), command.startTime().toLocalTime(), command.endTime().toLocalTime())) {
+            throw new IllegalArgumentException("Schedule does not enclose the time range");
+        }
+
+        if (reservationRepository.existsByOverlap(command.startTime(), command.endTime())) {
+            throw new IllegalArgumentException("Reservation time overlaps with an existing reservation");
+        }
+
         var reservationToUpdate = result.get();
         try{
             var updatedReservation= reservationRepository.save(reservationToUpdate.updatedReservation(command));
