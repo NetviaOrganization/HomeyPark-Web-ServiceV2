@@ -32,11 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 
-# Ignorar el directorio .github
-.github/
-
 # Ignorar todos los archivos .env
-*.env
+.env.development
+.env.production
 
 # Ignorar archivos relacionados con docker-compose
 docker-compose.yml
