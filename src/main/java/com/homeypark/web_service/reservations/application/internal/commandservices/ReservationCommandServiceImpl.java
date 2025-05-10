@@ -8,6 +8,7 @@ import com.homeypark.web_service.reservations.domain.model.commands.CreateReserv
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateReservationCommand;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateStatusCommand;
 import com.homeypark.web_service.reservations.domain.model.aggregates.Reservation;
+import com.homeypark.web_service.reservations.domain.model.valueobject.ParkingId;
 import com.homeypark.web_service.reservations.domain.model.valueobject.Status;
 import com.homeypark.web_service.reservations.domain.services.ReservationCommandService;
 import com.homeypark.web_service.reservations.infrastructure.external.ImageUploadService;
@@ -18,6 +19,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -37,15 +39,22 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
             throw new IllegalArgumentException("Guest or Host not found");
         }
         if (file.isEmpty()) throw new IllegalArgumentException("File is empty");
-        if (!externalVehicleService.checkVehicleExistById(command.guestId())) throw new IllegalArgumentException("Vehicle not found");
-        if (!externalParkingService.checkParkingExistById(command.guestId())) throw new IllegalArgumentException("Parking not found");
+        if (!externalVehicleService.checkVehicleExistById(command.vehicleId())) throw new IllegalArgumentException("Vehicle not found");
+        if (!externalParkingService.checkParkingExistById(command.parkingId())) throw new IllegalArgumentException("Parking not found");
 
-        if (!externalScheduleService.doesScheduleEncloseTimeRange(command.startTime().getDayOfWeek().name(), command.startTime().toLocalTime(), command.endTime().toLocalTime())) {
+        if (!externalScheduleService.doesScheduleEncloseTimeRange(command.reservationDate().getDayOfWeek().name(), command.startTime(), command.endTime())) {
             throw new IllegalArgumentException("Schedule does not enclose the time range");
         }
 
-        if (reservationRepository.existsByOverlap(command.startTime(), command.endTime())) {
-            throw new IllegalArgumentException("Reservation time overlaps with an existing reservation");
+        List<Status> blockedStatuses = List.of(Status.Approved, Status.InProgress, Status.Completed);
+
+        if (reservationRepository.existsByOverlapWithStatus(
+                new ParkingId(command.parkingId()),
+                command.reservationDate(),
+                command.startTime(),
+                command.endTime(),
+                blockedStatuses)) {
+            throw new IllegalArgumentException("Reservation time overlaps with an existing approved reservation");
         }
 
 
@@ -70,18 +79,26 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
         }
     }
 
+    @Transactional
     @Override
     public Optional<Reservation> handle(UpdateReservationCommand command) {
         var result = reservationRepository.findById(command.reservationId());
         if (result.isEmpty())
             throw new IllegalArgumentException("Reservation does not exist");
 
-        if (!externalScheduleService.doesScheduleEncloseTimeRange(command.startTime().getDayOfWeek().name(), command.startTime().toLocalTime(), command.endTime().toLocalTime())) {
+        if (!externalScheduleService.doesScheduleEncloseTimeRange(command.reservationDate().getDayOfWeek().name(), command.startTime(), command.endTime())) {
             throw new IllegalArgumentException("Schedule does not enclose the time range");
         }
 
-        if (reservationRepository.existsByOverlap(command.startTime(), command.endTime())) {
-            throw new IllegalArgumentException("Reservation time overlaps with an existing reservation");
+        List<Status> blockedStatuses = List.of(Status.Approved, Status.InProgress, Status.Completed);
+
+        if (reservationRepository.existsByOverlapWithStatus(
+                new ParkingId(result.get().getParkingId().parkingId()),
+                command.reservationDate(),
+                command.startTime(),
+                command.endTime(),
+                blockedStatuses)) {
+            throw new IllegalArgumentException("Reservation time overlaps with an existing approved reservation");
         }
 
         var reservationToUpdate = result.get();

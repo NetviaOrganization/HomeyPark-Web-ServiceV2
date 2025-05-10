@@ -9,6 +9,7 @@ public class CreateReservationCommandFromResourceAssembler {
         return new CreateReservationCommand(
                 resource.hoursRegistered(),
                 resource.totalFare(),
+                resource.reservationDate(),
                 resource.startTime(),
                 resource.endTime(),
                 resource.guestId(),
