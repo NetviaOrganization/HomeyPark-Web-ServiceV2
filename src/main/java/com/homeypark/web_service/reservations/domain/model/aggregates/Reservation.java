@@ -13,7 +13,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Setter
 @Getter
@@ -28,8 +30,9 @@ public class Reservation {
 
     private Integer hoursRegistered;
     private Double totalFare;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDate reservationDate;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
     private String paymentReceiptUrl;
     private String paymentReceiptDeleteUrl;
@@ -60,6 +63,7 @@ public class Reservation {
     public Reservation(CreateReservationCommand command) {
         this.hoursRegistered = command.hoursRegistered();
         this.totalFare = command.totalFare();
+        this.reservationDate = command.reservationDate();
         this.startTime = command.startTime();
         this.endTime = command.endTime();
         this.hostId = new HostId(command.hostId());
@@ -71,6 +75,7 @@ public class Reservation {
     public Reservation updatedReservation(UpdateReservationCommand command){
         this.hoursRegistered = command.hoursRegistered();
         this.totalFare = command.totalFare();
+        this.reservationDate = command.reservationDate();
         this.startTime = command.startTime();
         this.endTime = command.endTime();
         return this;
@@ -79,6 +84,5 @@ public class Reservation {
         this.status = command.status();
         return this;
     }
-
 
 }
