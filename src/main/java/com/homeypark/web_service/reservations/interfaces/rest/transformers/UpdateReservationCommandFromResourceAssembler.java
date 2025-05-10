@@ -8,6 +8,7 @@ public class UpdateReservationCommandFromResourceAssembler {
         return new UpdateReservationCommand(reservationId,
                 resource.hoursRegistered(),
                 resource.totalFare(),
+                resource.reservationDate(),
                 resource.startTime(),
                 resource.endTime()
         );

@@ -2,6 +2,8 @@ package com.homeypark.web_service.reservations.application.internal.queryservice
 
 import com.homeypark.web_service.reservations.domain.model.aggregates.Reservation;
 import com.homeypark.web_service.reservations.domain.model.queries.*;
+import com.homeypark.web_service.reservations.domain.model.valueobject.GuestId;
+import com.homeypark.web_service.reservations.domain.model.valueobject.HostId;
 import com.homeypark.web_service.reservations.domain.model.valueobject.Status;
 import com.homeypark.web_service.reservations.domain.services.ReservationQueryService;
 import com.homeypark.web_service.reservations.infrastructure.repositories.jpa.ReservationRepository;
@@ -49,11 +51,13 @@ public class ReservationQueryServiceImpl implements ReservationQueryService {
 
     @Override
     public List<Reservation> handle(GetReservationsByHostIdQuery query) {
-        return reservationRepository.findByHostId(query.hostId());
+        HostId hostId = new HostId(query.hostId());
+        return reservationRepository.findByHostId(hostId);
     }
 
     @Override
     public List<Reservation> handle(GetReservationsByGuestIdQuery query) {
-        return reservationRepository.findByGuestId(query.guestId());
+        GuestId guestId = new GuestId(query.guestId());
+        return reservationRepository.findByGuestId(guestId);
     }
 }

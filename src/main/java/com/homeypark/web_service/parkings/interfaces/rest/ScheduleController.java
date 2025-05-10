@@ -34,19 +34,19 @@ public class ScheduleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Schedule> updateSchedule(@PathVariable Long id, @RequestBody UpdateScheduleResource updateScheduleResource){
+    public ResponseEntity<ScheduleResource> updateSchedule(@PathVariable Long id, @RequestBody UpdateScheduleResource updateScheduleResource){
 
         var updateScheduleCommand = UpdateScheduleCommandFromResourceAssembler.toCommandFromResource(id, updateScheduleResource);
 
-        var updatedSchedule = scheduleCommandService.handle(updateScheduleCommand);
+        var updatedSchedule = scheduleCommandService.handle(updateScheduleCommand).map(ScheduleResourceFromEntityAssembler::toResourceFromEntity);
 
         return updatedSchedule.map(p -> new ResponseEntity<>(p, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @PostMapping
-    public ResponseEntity<Schedule> createSchedule(@RequestBody CreateScheduleResource createScheduleResource){
+    public ResponseEntity<ScheduleResource> createSchedule(@RequestBody CreateScheduleResource createScheduleResource){
         var createScheduleCommand = CreateScheduleCommandFromResourceAssembler.toCommandFromResource(createScheduleResource);
-        var schedule = scheduleCommandService.handle(createScheduleCommand);
+        var schedule = scheduleCommandService.handle(createScheduleCommand).map(ScheduleResourceFromEntityAssembler::toResourceFromEntity);
         return schedule.map(p->new ResponseEntity<>(p,HttpStatus.CREATED)).orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
