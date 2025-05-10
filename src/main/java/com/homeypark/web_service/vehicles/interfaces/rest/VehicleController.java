@@ -14,6 +14,7 @@ import com.homeypark.web_service.vehicles.interfaces.rest.transform.UpdateVehicl
 import com.homeypark.web_service.vehicles.interfaces.rest.transform.VehicleResourceFromEntityAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,7 +55,7 @@ public class VehicleController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<VehicleResource> createVehicle(@RequestBody CreateVehicleResource resource) {
+    public ResponseEntity<VehicleResource> createVehicle(@Validated @RequestBody CreateVehicleResource resource) {
         return vehicleCommandService.handle(CreateVehicleCommandFromResourceAssembler.toCommandFromResource(resource))
                 .map(VehicleResourceFromEntityAssembler::toResourceFromEntity)
                 .map(vehicle -> ResponseEntity.status(HttpStatus.CREATED).body(vehicle))

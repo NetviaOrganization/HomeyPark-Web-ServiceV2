@@ -10,6 +10,7 @@ import com.homeypark.web_service.iam.interfaces.rest.transform.SignInCommandFrom
 import com.homeypark.web_service.iam.interfaces.rest.transform.SignUpCommandFromResourceAssembler;
 import com.homeypark.web_service.iam.interfaces.rest.transform.UserResourceFromEntityAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +69,7 @@ public class AuthenticationController {
    * @return the created user resource.
    */
   @PostMapping("/sign-up")
-  public ResponseEntity<UserResource> signUp(@RequestBody SignUpResource signUpResource) {
+  public ResponseEntity<UserResource> signUp(@Valid @RequestBody SignUpResource signUpResource) {
     var signUpCommand = SignUpCommandFromResourceAssembler
         .toCommandFromResource(signUpResource);
     System.out.println(signUpCommand.roles());

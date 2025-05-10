@@ -8,15 +8,4 @@ public record CreateScheduleCommand(
         LocalDateTime startTime,
         LocalDateTime endTime
 ) {
-    public CreateScheduleCommand {
-        if (day == null || day.isBlank()) {
-            throw new IllegalArgumentException("Day cannot be null or empty");
-        }
-        if (startTime == null) {
-            throw new IllegalArgumentException("Start time cannot be null");
-        }
-        if (endTime == null) {
-            throw new IllegalArgumentException("End time cannot be null");
-        }
-    }
 }
