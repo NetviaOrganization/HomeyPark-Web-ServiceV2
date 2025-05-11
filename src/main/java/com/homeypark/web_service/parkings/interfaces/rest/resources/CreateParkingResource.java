@@ -16,7 +16,6 @@ public record CreateParkingResource(
         String street,
         String district,
         String city,
-        String coordinates,
         Double latitude,
         Double longitude
 ) {
