@@ -5,6 +5,10 @@ import com.homeypark.web_service.parkings.interfaces.rest.resources.UpdateSchedu
 
 public class UpdateScheduleCommandFromResourceAssembler {
     public static UpdateScheduleCommand toCommandFromResource(Long id, UpdateScheduleResource resource) {
-        return new UpdateScheduleCommand(id, resource.day(), resource.startTime(), resource.endTime());
+        return new UpdateScheduleCommand(
+                id,
+                resource.day(),
+                resource.startTime(),
+                resource.endTime());
     }
 }
