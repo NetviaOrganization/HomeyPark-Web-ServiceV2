@@ -1,5 +1,9 @@
 package com.homeypark.web_service.parkings.interfaces.rest.resources;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 public record ParkingResource(
         Long id,
         Long profileId,
@@ -8,17 +12,11 @@ public record ParkingResource(
         Double height,
         Double price,
         String phone,
-        String space,
+        Integer space,
         String description,
-        String address,
-        String numDirection,
-        String street,
-        String district,
-        String city,
-        String latitude,
-        String longitude,
-        String day,
-        String startTime,
-        String endTime
+        LocationResource location,
+        List<ScheduleResource> schedules,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
 }

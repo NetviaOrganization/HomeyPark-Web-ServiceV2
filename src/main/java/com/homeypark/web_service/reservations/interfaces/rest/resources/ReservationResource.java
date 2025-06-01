@@ -18,6 +18,8 @@ public record ReservationResource(
         Long parkingId,
         Long vehicleId,
         String paymentReceiptUrl,
-        String paymentReceiptDeleteUrl
+        String paymentReceiptDeleteUrl,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
 }

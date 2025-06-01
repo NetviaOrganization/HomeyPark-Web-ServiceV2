@@ -5,11 +5,14 @@ import com.homeypark.web_service.profiles.interfaces.rest.resources.ProfileResou
 
 public class ProfileResourceFromEntityAssembler {
     public static ProfileResource toResourceFromEntity(Profile entity) {
-        return new ProfileResource(entity.getId(),
-                entity.getName(),
+        return new ProfileResource(
+                entity.getId(),
+                entity.getFirstName(),
                 entity.getLastName(),
-                entity.getAddress(),
-                entity.getUserId().userIdAsPrimitive()
+                entity.getBirthDate(),
+                entity.getUserId().userIdAsPrimitive(),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt()
         );
     }
 }
