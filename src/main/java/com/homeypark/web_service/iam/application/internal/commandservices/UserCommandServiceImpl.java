@@ -9,7 +9,6 @@ import com.homeypark.web_service.iam.domain.model.commands.SignUpCommand;
 import com.homeypark.web_service.iam.domain.model.exceptions.EmailAlreadyExistsException;
 import com.homeypark.web_service.iam.domain.model.exceptions.InvalidCredentialsException;
 import com.homeypark.web_service.iam.domain.model.exceptions.RoleNotFoundException;
-import com.homeypark.web_service.iam.domain.model.exceptions.UsernameAlreadyExistsException;
 import com.homeypark.web_service.iam.domain.model.valueobjects.Roles;
 import com.homeypark.web_service.iam.domain.services.UserCommandService;
 import com.homeypark.web_service.iam.infrastructure.persistence.jpa.repositories.RoleRepository;
@@ -67,7 +66,7 @@ public class UserCommandServiceImpl implements UserCommandService {
     if (!hashingService.matches(command.password(), user.get().getPassword()))
       throw new InvalidCredentialsException();
 
-    var token = tokenService.generateToken(user.get().getEmail());
+    var token = tokenService.generateToken(user.get().getId());
     return Optional.of(ImmutablePair.of(user.get(), token));
   }
 
