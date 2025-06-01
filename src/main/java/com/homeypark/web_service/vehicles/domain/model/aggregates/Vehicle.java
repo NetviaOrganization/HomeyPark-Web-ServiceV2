@@ -2,23 +2,24 @@ package com.homeypark.web_service.vehicles.domain.model.aggregates;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.homeypark.web_service.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import com.homeypark.web_service.vehicles.domain.model.valueobjects.ProfileId;
 import com.homeypark.web_service.vehicles.domain.model.commands.CreateVehicleCommand;
 import com.homeypark.web_service.vehicles.domain.model.commands.UpdateVehicleCommand;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Data
 @Entity
 @NoArgsConstructor
 @Table(name = "vehicles")
 
-public class Vehicle {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Vehicle extends AuditableAbstractAggregateRoot<Vehicle> {
     private String licensePlate;
     private String model;
     private String brand;

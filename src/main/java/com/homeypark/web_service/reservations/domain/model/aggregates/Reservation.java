@@ -4,6 +4,7 @@ import com.homeypark.web_service.reservations.domain.model.commands.CreateReserv
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateReservationCommand;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateStatusCommand;
 import com.homeypark.web_service.reservations.domain.model.valueobject.*;
+import com.homeypark.web_service.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -19,14 +20,10 @@ import java.time.LocalTime;
 
 @Setter
 @Getter
-@Data
 @Entity
 @NoArgsConstructor
 @Table(name = "reservations")
-public class Reservation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Reservation extends AuditableAbstractAggregateRoot<Reservation> {
 
     private Integer hoursRegistered;
     private Double totalFare;
@@ -36,8 +33,6 @@ public class Reservation {
 
     private String paymentReceiptUrl;
     private String paymentReceiptDeleteUrl;
-
-
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -53,12 +48,6 @@ public class Reservation {
 
     @Embedded
     private VehicleId vehicleId;
-
-    @CreationTimestamp
-    private Instant createdAt;
-
-    @UpdateTimestamp
-    private Instant updatedAt;
 
     public Reservation(CreateReservationCommand command) {
         this.hoursRegistered = command.hoursRegistered();
