@@ -1,4 +1,4 @@
-package com.homeypark.web_service.reservations.infrastructure.repositories.jpa;
+package com.homeypark.web_service.reservations.infrastructure.persistence.jpa.repositories;
 
 import com.homeypark.web_service.reservations.domain.model.aggregates.Reservation;
 import com.homeypark.web_service.reservations.domain.model.valueobject.GuestId;

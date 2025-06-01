@@ -54,8 +54,8 @@ public class BearerAuthorizationRequestFilter extends OncePerRequestFilter {
       String token = tokenService.getBearerTokenFrom(request);
       LOGGER.info("Token: {}", token);
       if (token != null && tokenService.validateToken(token)) {
-        String username = tokenService.getUsernameFromToken(token);
-        var userDetails = userDetailsService.loadUserByUsername(username);
+        String email = tokenService.getUsernameFromToken(token);
+        var userDetails = userDetailsService.loadUserByUsername(email);
         SecurityContextHolder.getContext()
             .setAuthentication(
                 UsernamePasswordAuthenticationTokenBuilder.build(userDetails, request));

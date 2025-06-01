@@ -51,25 +51,25 @@ public class TokenServiceImpl implements BearerTokenService {
 
   /**
    * This method generates a JWT token from a username
-   * @param username the username
+   * @param email the username
    * @return String the JWT token
    */
-  public String generateToken(String username) {
-    return buildTokenWithDefaultParameters(username);
+  public String generateToken(String email) {
+    return buildTokenWithDefaultParameters(email);
   }
 
   /**
    * This method generates a JWT token from a username and a secret.
    * It uses the default expiration days from the application.properties file.
-   * @param username the username
+   * @param email the username
    * @return String the JWT token
    */
-  private String buildTokenWithDefaultParameters(String username) {
+  private String buildTokenWithDefaultParameters(String email) {
     var issuedAt = new Date();
     var expiration = DateUtils.addDays(issuedAt, expirationDays);
     var key = getSigningKey();
     return Jwts.builder()
-        .subject(username)
+        .subject(email)
         .issuedAt(issuedAt)
         .expiration(expiration)
         .signWith(key)

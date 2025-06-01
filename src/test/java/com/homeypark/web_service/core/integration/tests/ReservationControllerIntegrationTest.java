@@ -1,5 +1,6 @@
 package com.homeypark.web_service.core.integration.tests;
 
+import com.homeypark.web_service.reservations.domain.model.exceptions.ReservationNotFoundException;
 import com.homeypark.web_service.reservations.domain.model.aggregates.Reservation;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateReservationCommand;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateStatusCommand;
@@ -232,7 +233,7 @@ public class ReservationControllerIntegrationTest {
                 20.0, 2, 1L, 2L, 1L, 1L);
 
         Mockito.when(reservationQueryService.handle(ArgumentMatchers.any(GetReservationByIdQuery.class)))
-                .thenReturn(Optional.of(mockReservation));
+                .thenReturn(mockReservation);
 
         ResponseEntity<ReservationResource> response = reservationController.getReservationById(reservationId);
 
@@ -251,7 +252,7 @@ public class ReservationControllerIntegrationTest {
     void testGetReservationByIdNotFound() {
         Long reservationId = 1L;
         Mockito.when(reservationQueryService.handle(ArgumentMatchers.any(GetReservationByIdQuery.class)))
-                .thenReturn(Optional.empty());
+                .thenThrow(new ReservationNotFoundException());
 
         ResponseEntity<ReservationResource> response = reservationController.getReservationById(reservationId);
 
