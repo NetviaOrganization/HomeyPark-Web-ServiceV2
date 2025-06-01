@@ -5,6 +5,7 @@ import com.homeypark.web_service.parkings.domain.model.aggregates.Parking;
 import com.homeypark.web_service.parkings.domain.model.commands.CreateParkingCommand;
 import com.homeypark.web_service.parkings.domain.model.commands.DeleteParkingCommand;
 import com.homeypark.web_service.parkings.domain.model.commands.UpdateParkingCommand;
+import com.homeypark.web_service.parkings.domain.model.exceptions.ParkingNotFoundException;
 import com.homeypark.web_service.parkings.domain.services.ParkingCommandService;
 import com.homeypark.web_service.parkings.infrastructure.persistence.jpa.repositories.ParkingRepository;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class ParkingCommandServiceImpl implements ParkingCommandService {
     @Override
     public Optional<Parking> handle(CreateParkingCommand command) {
         if (!externalProfileService.checkProfileExistById(command.profileId())) {
-            throw new IllegalArgumentException("Host not found");
+            throw new ParkingNotFoundException();
         }
         var parking = new Parking(command);
         try {
@@ -41,11 +42,11 @@ public class ParkingCommandServiceImpl implements ParkingCommandService {
         var result = parkingRepository.findById(command.parkingId());
 
         if (result.isEmpty())
-            throw new IllegalArgumentException("Parking does not exist");
+            throw new ParkingNotFoundException();
         try {
             var parking = result.get();
 
-            System.out.println("[DEBUG COMMAND DATA]" + command.address() + " " + command.numDirection());
+            System.out.println("[DEBUG COMMAND DATA]" + command.location().address() + " " + command.location().numDirection());
 
             parking.updateParking(command);
 
@@ -61,6 +62,9 @@ public class ParkingCommandServiceImpl implements ParkingCommandService {
 
     @Override
     public void handle(DeleteParkingCommand command) {
+        if (!parkingRepository.existsById(command.parkingId())) {
+            throw new ParkingNotFoundException();
+        }
         parkingRepository.deleteById(command.parkingId());
     }
 }

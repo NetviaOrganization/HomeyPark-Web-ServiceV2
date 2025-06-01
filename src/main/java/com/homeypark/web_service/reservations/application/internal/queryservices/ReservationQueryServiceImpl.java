@@ -1,17 +1,17 @@
 package com.homeypark.web_service.reservations.application.internal.queryservices;
 
+import com.homeypark.web_service.reservations.domain.model.exceptions.ReservationNotFoundException;
 import com.homeypark.web_service.reservations.domain.model.aggregates.Reservation;
 import com.homeypark.web_service.reservations.domain.model.queries.*;
 import com.homeypark.web_service.reservations.domain.model.valueobject.GuestId;
 import com.homeypark.web_service.reservations.domain.model.valueobject.HostId;
 import com.homeypark.web_service.reservations.domain.model.valueobject.Status;
 import com.homeypark.web_service.reservations.domain.services.ReservationQueryService;
-import com.homeypark.web_service.reservations.infrastructure.repositories.jpa.ReservationRepository;
+import com.homeypark.web_service.reservations.infrastructure.persistence.jpa.repositories.ReservationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReservationQueryServiceImpl implements ReservationQueryService {
@@ -28,8 +28,8 @@ public class ReservationQueryServiceImpl implements ReservationQueryService {
     }
 
     @Override
-    public Optional<Reservation> handle(GetReservationByIdQuery query) {
-        return reservationRepository.findById(query.reservationId());
+    public Reservation handle(GetReservationByIdQuery query) {
+        return reservationRepository.findById(query.reservationId()).orElseThrow(ReservationNotFoundException::new);
     }
 
     @Override

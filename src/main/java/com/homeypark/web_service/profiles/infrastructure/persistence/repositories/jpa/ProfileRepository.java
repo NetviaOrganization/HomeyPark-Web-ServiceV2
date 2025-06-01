@@ -1,4 +1,4 @@
-package com.homeypark.web_service.profiles.infrastructure.repositories.jpa;
+package com.homeypark.web_service.profiles.infrastructure.persistence.repositories.jpa;
 
 
 import com.homeypark.web_service.profiles.domain.model.aggregates.Profile;

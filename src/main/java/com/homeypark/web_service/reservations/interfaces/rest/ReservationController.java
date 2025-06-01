@@ -11,6 +11,7 @@ import com.homeypark.web_service.reservations.interfaces.rest.transformers.Creat
 import com.homeypark.web_service.reservations.interfaces.rest.transformers.ReservationResourceFromEntityAssembler;
 import com.homeypark.web_service.reservations.interfaces.rest.transformers.UpdateReservationCommandFromResourceAssembler;
 import com.homeypark.web_service.reservations.interfaces.rest.transformers.UpdateStatusCommandFromResourceAssembler;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,7 @@ public class ReservationController {
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ReservationResource> createReservation(
-            @RequestPart("file") MultipartFile file,
+            @Valid @RequestPart("file") MultipartFile file,
             @RequestPart("reservation") CreateReservationResource createReservationResource
             ) {
 
@@ -58,7 +59,7 @@ public class ReservationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReservationResource> updateReservation(@PathVariable Long id, @RequestBody UpdateReservationResource updateReservationResource) {
+    public ResponseEntity<ReservationResource> updateReservation(@PathVariable Long id, @Valid @RequestBody UpdateReservationResource updateReservationResource) {
         var updateReservationCommand = UpdateReservationCommandFromResourceAssembler.toCommandFromResource(id, updateReservationResource);
         var updatedReservation = reservationCommandService.handle(updateReservationCommand)
                 .map(ReservationResourceFromEntityAssembler::toResourceFromEntity);
@@ -66,19 +67,19 @@ public class ReservationController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     @PutMapping("/{id}/status")
-    public ResponseEntity<ReservationResource> updateReservationStatus(@PathVariable Long id, @RequestBody UpdateStatusResource updateStatusResource){
+    public ResponseEntity<ReservationResource> updateReservationStatus(@PathVariable Long id, @Valid @RequestBody UpdateStatusResource updateStatusResource){
         var updateStatusCommand = UpdateStatusCommandFromResourceAssembler.toCommandFromResource(id, updateStatusResource);
         var updatedStatus = reservationCommandService.handle(updateStatusCommand).map(ReservationResourceFromEntityAssembler::toResourceFromEntity);
         return updatedStatus.map(r -> new ResponseEntity<>(r,HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReservationResource> getReservationById(@PathVariable("id") Long id) {
+    public ReservationResource getReservationById(@PathVariable("id") Long id) {
         var getReservationByIdQuery = new GetReservationByIdQuery(id);
 
-        var reservation = reservationQueryService.handle(getReservationByIdQuery).map(ReservationResourceFromEntityAssembler::toResourceFromEntity);
-
-        return reservation.map(r -> new ResponseEntity<>(r, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ReservationResourceFromEntityAssembler.toResourceFromEntity(
+                reservationQueryService.handle(getReservationByIdQuery)
+        );
     }
     @GetMapping("/host/{hostId}")
     public ResponseEntity<List<ReservationResource>> getReservationsByHostId(@PathVariable Long hostId){

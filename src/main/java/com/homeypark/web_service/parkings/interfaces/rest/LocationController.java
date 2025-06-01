@@ -9,6 +9,7 @@ import com.homeypark.web_service.parkings.interfaces.rest.resources.UpdateLocati
 import com.homeypark.web_service.parkings.interfaces.rest.transform.LocationResourceFromEntityAssembler;
 import com.homeypark.web_service.parkings.interfaces.rest.transform.UpdateLocationCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class LocationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LocationResource> updateLocation(@PathVariable Long id, @RequestBody UpdateLocationResource updateLocationResource) {
+    public ResponseEntity<LocationResource> updateLocation(@PathVariable Long id, @Valid @RequestBody UpdateLocationResource updateLocationResource) {
         var updateLocationCommand = UpdateLocationCommandFromResourceAssembler.toCommandFromResource(id, updateLocationResource);
         var updatedLocation = locationCommandService.handle(updateLocationCommand);
         var resource = LocationResourceFromEntityAssembler.toResourceFromEntity(updatedLocation.orElseThrow(() -> new IllegalArgumentException("Location not found")));

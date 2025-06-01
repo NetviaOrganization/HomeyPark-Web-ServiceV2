@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ReservationQueryService {
     List<Reservation> handle(GetAllReservationsQuery query);
-    Optional<Reservation> handle(GetReservationByIdQuery query);
+    Reservation handle(GetReservationByIdQuery query);
     List<Reservation> handle(GetInProgressReservationQuery query);
     List<Reservation> handle(GetPastReservationQuery query);
     List<Reservation> handle(GetUpComingReservationQuery query);

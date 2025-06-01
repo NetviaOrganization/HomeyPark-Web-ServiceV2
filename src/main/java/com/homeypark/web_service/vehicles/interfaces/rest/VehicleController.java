@@ -12,6 +12,7 @@ import com.homeypark.web_service.vehicles.interfaces.rest.resources.VehicleResou
 import com.homeypark.web_service.vehicles.interfaces.rest.transform.CreateVehicleCommandFromResourceAssembler;
 import com.homeypark.web_service.vehicles.interfaces.rest.transform.UpdateVehicleCommandFromResource;
 import com.homeypark.web_service.vehicles.interfaces.rest.transform.VehicleResourceFromEntityAssembler;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -55,7 +56,7 @@ public class VehicleController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<VehicleResource> createVehicle(@Validated @RequestBody CreateVehicleResource resource) {
+    public ResponseEntity<VehicleResource> createVehicle(@Valid @RequestBody CreateVehicleResource resource) {
         return vehicleCommandService.handle(CreateVehicleCommandFromResourceAssembler.toCommandFromResource(resource))
                 .map(VehicleResourceFromEntityAssembler::toResourceFromEntity)
                 .map(vehicle -> ResponseEntity.status(HttpStatus.CREATED).body(vehicle))
@@ -70,7 +71,7 @@ public class VehicleController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<VehicleResource> updateVehicle(@PathVariable Long id, @RequestBody UpdateVehicleResource updateVehicleResource) {
+    public ResponseEntity<VehicleResource> updateVehicle(@PathVariable Long id, @Valid @RequestBody UpdateVehicleResource updateVehicleResource) {
         var updateVehicleCommand = UpdateVehicleCommandFromResource.toCommandFromResource(id, updateVehicleResource);
         var updatedVehicle = vehicleCommandService.handle(updateVehicleCommand).map(VehicleResourceFromEntityAssembler::toResourceFromEntity);
         return updatedVehicle.map(r -> new ResponseEntity<>(r, HttpStatus.OK))
