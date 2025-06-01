@@ -74,12 +74,13 @@ public class ReservationController {
     }
 
     @GetMapping("/{id}")
-    public ReservationResource getReservationById(@PathVariable("id") Long id) {
+    public ResponseEntity<ReservationResource> getReservationById(@PathVariable("id") Long id) {
         var getReservationByIdQuery = new GetReservationByIdQuery(id);
 
-        return ReservationResourceFromEntityAssembler.toResourceFromEntity(
-                reservationQueryService.handle(getReservationByIdQuery)
-        );
+        var reservation = reservationQueryService.handle(getReservationByIdQuery).map(ReservationResourceFromEntityAssembler::toResourceFromEntity);
+
+        return reservation.map(r -> new ResponseEntity<>(r, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     @GetMapping("/host/{hostId}")
     public ResponseEntity<List<ReservationResource>> getReservationsByHostId(@PathVariable Long hostId){

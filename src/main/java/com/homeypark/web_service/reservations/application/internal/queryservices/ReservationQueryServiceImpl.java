@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationQueryServiceImpl implements ReservationQueryService {
@@ -28,8 +29,8 @@ public class ReservationQueryServiceImpl implements ReservationQueryService {
     }
 
     @Override
-    public Reservation handle(GetReservationByIdQuery query) {
-        return reservationRepository.findById(query.reservationId()).orElseThrow(ReservationNotFoundException::new);
+    public Optional<Reservation> handle(GetReservationByIdQuery query) {
+        return reservationRepository.findById(query.reservationId());
     }
 
     @Override
