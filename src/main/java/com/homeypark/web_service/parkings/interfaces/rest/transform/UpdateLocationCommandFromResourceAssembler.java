@@ -13,6 +13,7 @@ public class UpdateLocationCommandFromResourceAssembler {
                 resource.district(),
                 resource.city(),
                 resource.latitude(),
-                resource.longitude());
+                resource.longitude()
+        );
     }
 }

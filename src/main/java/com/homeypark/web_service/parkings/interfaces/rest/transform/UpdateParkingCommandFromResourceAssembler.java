@@ -13,6 +13,7 @@ public class UpdateParkingCommandFromResourceAssembler {
                 resource.phone(),
                 resource.space(),
                 resource.description(),
-                CreateLocationCommandFromResourceAssembler.fromResource(resource.location()));
+                CreateLocationCommandFromResourceAssembler.fromResource(resource.location())
+        );
     }
 }
