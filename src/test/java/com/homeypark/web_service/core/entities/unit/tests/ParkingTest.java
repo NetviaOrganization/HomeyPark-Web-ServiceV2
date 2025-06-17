@@ -1,6 +1,7 @@
 package com.homeypark.web_service.core.entities.unit.tests;
 
 import com.homeypark.web_service.parkings.domain.model.aggregates.Parking;
+import com.homeypark.web_service.parkings.domain.model.commands.CreateLocationCommand;
 import com.homeypark.web_service.parkings.domain.model.commands.CreateParkingCommand;
 import com.homeypark.web_service.parkings.domain.model.entities.Location;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,10 +20,12 @@ class ParkingTest {
     void setUp() {
         // Arrange: Crear mocks y objetos necesarios
         mockLocation = mock(Location.class);
-        mockCommand = new CreateParkingCommand(1L, 2.5, 5.0, 3.0, 10.0,
-                "123456789", 1, "Test Description",
-                "Test Address", "123", "Test Street",
-                "Test District", "Test City", 12.34, 56.78);
+        CreateLocationCommand locationCommand = new CreateLocationCommand(
+                "Test Address", "123", "Test Street", "Test District", "Test City", 12.34, 56.78
+        );
+        mockCommand = new CreateParkingCommand(
+                1L, 2.5, 5.0, 3.0, 10.0, "123456789", 1, "Test Description", locationCommand
+        );
 
         parking = new Parking();
     }

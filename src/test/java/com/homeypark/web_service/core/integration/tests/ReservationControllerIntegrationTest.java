@@ -61,7 +61,6 @@ public class ReservationControllerIntegrationTest {
         reservation.setVehicleId(new VehicleId(vehicleId));
         reservation.setPaymentReceiptUrl("http://example.com/receipt" + id);
         reservation.setPaymentReceiptDeleteUrl("http://example.com/delete" + id);
-        reservation.setCreatedAt(Instant.now());
         return reservation;
     }
 
@@ -233,7 +232,7 @@ public class ReservationControllerIntegrationTest {
                 20.0, 2, 1L, 2L, 1L, 1L);
 
         Mockito.when(reservationQueryService.handle(ArgumentMatchers.any(GetReservationByIdQuery.class)))
-                .thenReturn(mockReservation);
+                .thenReturn(Optional.of(mockReservation));
 
         ResponseEntity<ReservationResource> response = reservationController.getReservationById(reservationId);
 
@@ -254,11 +253,9 @@ public class ReservationControllerIntegrationTest {
         Mockito.when(reservationQueryService.handle(ArgumentMatchers.any(GetReservationByIdQuery.class)))
                 .thenThrow(new ReservationNotFoundException());
 
-        ResponseEntity<ReservationResource> response = reservationController.getReservationById(reservationId);
-
-        assertNotNull(response);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNull(response.getBody());
+        assertThrows(ReservationNotFoundException.class, () -> {
+            reservationController.getReservationById(reservationId);
+        });
     }
 
     @Test

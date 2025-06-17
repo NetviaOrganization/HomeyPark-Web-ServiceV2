@@ -6,6 +6,8 @@ import com.homeypark.web_service.profiles.domain.model.commands.UpdateProfileCom
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,30 +20,29 @@ class ProfileTest {
     @BeforeEach
     void setUp() {
         // Arrange: Initialize commands and mock
-        mockCreateCommand = new CreateProfileCommand("John", "Doe", "123 Test Street", 1L);
-        mockUpdateCommand = new UpdateProfileCommand(1L, "Jane", "Smith", "456 New Street");
+        mockCreateCommand = new CreateProfileCommand("John", "Doe", LocalDate.parse("2000-01-01"), 1L);
+        mockUpdateCommand = new UpdateProfileCommand(1L, "Jane", "Smith", LocalDate.parse("2000-01-01"));
         mockProfile = mock(Profile.class);
     }
 
     @Test
     void testConstructorWithCreateCommand() {
-        //Arrange
+        // Arrange
         CreateProfileCommand command = mockCreateCommand;
 
         // Act
         Profile profile = new Profile(command);
 
         // Assert
-        assertEquals("John", profile.getName());
+        assertEquals("John", profile.getFirstName());
         assertEquals("Doe", profile.getLastName());
-        assertEquals("123 Test Street", profile.getAddress());
         assertNotNull(profile.getUserId());
         assertEquals(1L, profile.getUserId().userIdAsPrimitive());
     }
 
     @Test
     void testUpdateProfile() {
-        //Arrange
+        // Arrange
         UpdateProfileCommand command = mockUpdateCommand;
 
         // Act
@@ -54,13 +55,11 @@ class ProfileTest {
     @Test
     void testSettersAndGetters() {
         // Act
-        mockProfile.setName("Alice");
+        mockProfile.setFirstName("Alice");
         mockProfile.setLastName("Brown");
-        mockProfile.setAddress("789 Another Street");
 
         // Assert
-        verify(mockProfile).setName("Alice");
+        verify(mockProfile).setFirstName("Alice");
         verify(mockProfile).setLastName("Brown");
-        verify(mockProfile).setAddress("789 Another Street");
     }
 }

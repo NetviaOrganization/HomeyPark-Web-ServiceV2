@@ -8,9 +8,9 @@ import com.homeypark.web_service.parkings.domain.model.valueobjects.ProfileId;
 import com.homeypark.web_service.parkings.domain.services.ParkingCommandService;
 import com.homeypark.web_service.parkings.domain.services.ParkingQueryService;
 import com.homeypark.web_service.parkings.interfaces.rest.ParkingController;
+import com.homeypark.web_service.parkings.interfaces.rest.resources.CreateLocationResource;
 import com.homeypark.web_service.parkings.interfaces.rest.resources.CreateParkingResource;
 import com.homeypark.web_service.parkings.interfaces.rest.resources.ParkingResource;
-import com.homeypark.web_service.parkings.interfaces.rest.transform.ParkingResourceFromEntityAssembler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -39,14 +39,17 @@ public class ParkingControllerIntegrationTest {
     @Test
     void testCreateParkingSuccess() {
         // Arrange
-        CreateParkingResource resource = new CreateParkingResource(
-                1L, 2.5, 5.0, 2.0, 10.0, "987654321", 1, "Espacio techado",
+        CreateLocationResource locationResource = new CreateLocationResource(
                 "Av. Ejemplo", "456", "Calle Principal", "Surco", "Lima", -12.1, -77.03
+        );
+
+        CreateParkingResource resource = new CreateParkingResource(
+                1L, 2.5, 5.0, 2.0, 10.0, "+987654321", 1, "Espacio techado", locationResource
         );
 
         Parking parking = new Parking();
         parking.setId(1L);
-        parking.setPhone("987654321");
+        parking.setPhone("+987654321");
         parking.setDescription("Espacio techado");
         parking.setProfileId(new ProfileId(1L));
         parking.setSpace(1);
@@ -64,6 +67,7 @@ public class ParkingControllerIntegrationTest {
         location.setLatitude(-12.1);
         location.setLongitude(-77.03);
         parking.setLocation(location);
+        location.setParking(parking);  // Establecer la relación bidireccional
 
         Mockito.when(parkingCommandService.handle(ArgumentMatchers.any(CreateParkingCommand.class)))
                 .thenReturn(Optional.of(parking));
@@ -74,7 +78,7 @@ public class ParkingControllerIntegrationTest {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("987654321", response.getBody().phone());
+        assertEquals("+987654321", response.getBody().phone());
         assertEquals("Espacio techado", response.getBody().description());
     }
 
@@ -83,7 +87,7 @@ public class ParkingControllerIntegrationTest {
         // Arrange
         Parking parking = new Parking();
         parking.setId(1L);
-        parking.setPhone("123456789");
+        parking.setPhone("+123456789");
         parking.setDescription("Parqueo iluminado");
         parking.setProfileId(new ProfileId(1L));
         parking.setSpace(1);
@@ -101,6 +105,7 @@ public class ParkingControllerIntegrationTest {
         location.setLatitude(-12.0464);
         location.setLongitude(-77.0428);
         parking.setLocation(location);
+        location.setParking(parking);  // Establecer la relación bidireccional
 
         Mockito.when(parkingQueryService.handle(ArgumentMatchers.any(GetAllParkingQuery.class)))
                 .thenReturn(Collections.singletonList(parking));
