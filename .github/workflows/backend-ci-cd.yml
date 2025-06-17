@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-and-test:
@@ -28,12 +31,14 @@ jobs:
       - name: Give execution permission to mvnw
         run: chmod +x ./mvnw
 
+      - name: Compile (including tests)
+        run: ./mvnw compile test-compile
+
       - name: Run tests with Maven
         run: ./mvnw test -Dspring.profiles.active=test
 
       - name: Build with Maven
-        run: ./mvnw clean install -DskipTests
-
+        run: ./mvnw package -Dmaven.test.skip=true
 
   deploy-to-prod:
     if: github.ref == 'refs/heads/main'
