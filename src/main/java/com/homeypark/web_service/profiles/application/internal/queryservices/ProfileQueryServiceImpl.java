@@ -4,7 +4,7 @@ import com.homeypark.web_service.profiles.domain.model.aggregates.Profile;
 import com.homeypark.web_service.profiles.domain.model.queries.GetAllProfilesQuery;
 import com.homeypark.web_service.profiles.domain.model.queries.GetProfileByIdQuery;
 import com.homeypark.web_service.profiles.domain.services.ProfileQueryService;
-import com.homeypark.web_service.profiles.infrastructure.repositories.jpa.ProfileRepository;
+import com.homeypark.web_service.profiles.infrastructure.persistence.repositories.jpa.ProfileRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

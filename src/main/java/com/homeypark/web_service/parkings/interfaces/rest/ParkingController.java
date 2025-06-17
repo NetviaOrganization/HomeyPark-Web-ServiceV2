@@ -16,6 +16,7 @@ import com.homeypark.web_service.parkings.interfaces.rest.transform.CreateParkin
 import com.homeypark.web_service.parkings.interfaces.rest.transform.ParkingResourceFromEntityAssembler;
 import com.homeypark.web_service.parkings.interfaces.rest.transform.UpdateParkingCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,7 @@ public class ParkingController {
     }
 
     @PostMapping
-    public ResponseEntity<ParkingResource> createParking(@RequestBody CreateParkingResource createParkingResource) {
+    public ResponseEntity<ParkingResource> createParking(@Valid @RequestBody CreateParkingResource createParkingResource) {
         var createParkingCommand = CreateParkingCommandFromResourceAssembler.toCommandFromResource(createParkingResource);
         var parking = parkingCommandService.handle(createParkingCommand);
 
@@ -57,7 +58,7 @@ public class ParkingController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ParkingResource> updateParking(@PathVariable Long id, @RequestBody UpdateParkingResource updateParkingResource) {
+    public ResponseEntity<ParkingResource> updateParking(@Valid @PathVariable Long id, @RequestBody UpdateParkingResource updateParkingResource) {
         var updateParkingCommand = UpdateParkingCommandFromResourceAssembler.toCommandFromResource(id, updateParkingResource);
         var updatedParking = parkingCommandService.handle(updateParkingCommand);
 

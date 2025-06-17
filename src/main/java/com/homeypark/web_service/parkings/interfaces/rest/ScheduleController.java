@@ -11,6 +11,7 @@ import com.homeypark.web_service.parkings.interfaces.rest.transform.CreateSchedu
 import com.homeypark.web_service.parkings.interfaces.rest.transform.ScheduleResourceFromEntityAssembler;
 import com.homeypark.web_service.parkings.interfaces.rest.transform.UpdateScheduleCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,7 +45,7 @@ public class ScheduleController {
     }
 
     @PostMapping
-    public ResponseEntity<ScheduleResource> createSchedule(@RequestBody CreateScheduleResource createScheduleResource){
+    public ResponseEntity<ScheduleResource> createSchedule(@Valid @RequestBody CreateScheduleResource createScheduleResource){
         var createScheduleCommand = CreateScheduleCommandFromResourceAssembler.toCommandFromResource(createScheduleResource);
         var schedule = scheduleCommandService.handle(createScheduleCommand).map(ScheduleResourceFromEntityAssembler::toResourceFromEntity);
         return schedule.map(p->new ResponseEntity<>(p,HttpStatus.CREATED)).orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));

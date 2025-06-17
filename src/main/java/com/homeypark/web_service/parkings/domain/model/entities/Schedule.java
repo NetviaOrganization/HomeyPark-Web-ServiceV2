@@ -5,19 +5,19 @@ import com.homeypark.web_service.parkings.domain.model.aggregates.Parking;
 import com.homeypark.web_service.parkings.domain.model.commands.CreateScheduleCommand;
 import com.homeypark.web_service.parkings.domain.model.commands.UpdateScheduleCommand;
 import com.homeypark.web_service.parkings.domain.model.valueobjects.WeekDay;
+import com.homeypark.web_service.shared.domain.model.entities.AuditableModel;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalTime;
 
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
 @Table(name = "schedules")
-public class Schedule {
+public class Schedule extends AuditableModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

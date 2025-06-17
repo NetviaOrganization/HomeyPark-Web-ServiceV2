@@ -48,7 +48,7 @@ public class AuthenticationController {
    */
   @PostMapping("/sign-in")
   public ResponseEntity<AuthenticatedUserResource> signIn(
-      @RequestBody SignInResource signInResource) {
+          @Valid @RequestBody SignInResource signInResource) {
 
     var signInCommand = SignInCommandFromResourceAssembler
         .toCommandFromResource(signInResource);

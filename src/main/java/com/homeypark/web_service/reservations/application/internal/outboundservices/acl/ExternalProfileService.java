@@ -1,13 +1,13 @@
 package com.homeypark.web_service.reservations.application.internal.outboundservices.acl;
 
-import com.homeypark.web_service.profiles.interfaces.acl.ProfilesContextFacade;
+import com.homeypark.web_service.profiles.interfaces.acl.ProfileContextFacade;
 import org.springframework.stereotype.Service;
 
 @Service("reservationExternalProfileService")
 public class ExternalProfileService {
-    private final ProfilesContextFacade profilesContextFacade;
+    private final ProfileContextFacade profilesContextFacade;
 
-    public ExternalProfileService(ProfilesContextFacade profilesContextFacade) {
+    public ExternalProfileService(ProfileContextFacade profilesContextFacade) {
         this.profilesContextFacade = profilesContextFacade;
     }
 

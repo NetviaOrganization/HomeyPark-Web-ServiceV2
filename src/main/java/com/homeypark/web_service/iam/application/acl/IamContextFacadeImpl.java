@@ -1,17 +1,12 @@
 package com.homeypark.web_service.iam.application.acl;
 
-import com.homeypark.web_service.iam.domain.model.commands.SignUpCommand;
-import com.homeypark.web_service.iam.domain.model.entities.Role;
 import com.homeypark.web_service.iam.domain.model.queries.GetUserByIdQuery;
-import com.homeypark.web_service.iam.domain.model.queries.GetUserByUsernameQuery;
+import com.homeypark.web_service.iam.domain.model.queries.GetUserByEmailQuery;
 import com.homeypark.web_service.iam.domain.services.UserCommandService;
 import com.homeypark.web_service.iam.domain.services.UserQueryService;
 import com.homeypark.web_service.iam.interfaces.acl.IamContextFacade;
 import io.jsonwebtoken.lang.Strings;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * IamContextFacadeImpl
@@ -37,38 +32,19 @@ public class IamContextFacadeImpl implements IamContextFacade {
 
     // inherited javadoc
     @Override
-    public Long createUser(String email, String username, String password) {
-        var signUpCommand = new SignUpCommand(email, username, password, List.of(Role.getDefaultRole()));
-        var result = userCommandService.handle(signUpCommand);
-        if (result.isEmpty()) return 0L;
-        return result.get().getId();
-    }
-
-    // inherited javadoc
-    @Override
-    public Long createUser(String email, String username, String password, List<String> roleNames) {
-        var roles = roleNames == null ? new ArrayList<Role>() : roleNames.stream().map(Role::toRoleFromName).toList();
-        var signUpCommand = new SignUpCommand(email, username, password, roles);
-        var result = userCommandService.handle(signUpCommand);
-        if (result.isEmpty()) return 0L;
-        return result.get().getId();
-    }
-
-    // inherited javadoc
-    @Override
-    public Long fetchUserIdByUsername(String username) {
-        var getUserByUsernameQuery = new GetUserByUsernameQuery(username);
-        var result = userQueryService.handle(getUserByUsernameQuery);
+    public Long fetchUserIdByEmail(String email) {
+        var getUserByEmailQuery = new GetUserByEmailQuery(email);
+        var result = userQueryService.handle(getUserByEmailQuery);
         if (result.isEmpty()) return 0L;
         return result.get().getId();
     }
 
     @Override
-    public String fetchUsernameByUserId(Long userId) {
+    public String fetchEmailByUserId(Long userId) {
         var getUserByIdQuery = new GetUserByIdQuery(userId);
         var result = userQueryService.handle(getUserByIdQuery);
         if (result.isEmpty()) return Strings.EMPTY;
-        return result.get().getUsername();
+        return result.get().getEmail();
     }
 
     @Override

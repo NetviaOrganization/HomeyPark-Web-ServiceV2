@@ -5,23 +5,20 @@ import com.homeypark.web_service.parkings.domain.model.commands.UpdateParkingCom
 import com.homeypark.web_service.parkings.domain.model.entities.Location;
 import com.homeypark.web_service.parkings.domain.model.entities.Schedule;
 import com.homeypark.web_service.parkings.domain.model.valueobjects.ProfileId;
+import com.homeypark.web_service.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
 @Table(name = "parkings")
-public class Parking {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Parking extends AuditableAbstractAggregateRoot<Parking> {
 
     @Embedded
     private ProfileId profileId;
@@ -64,13 +61,13 @@ public class Parking {
         this.description = command.description();
 
         this.location = new Location();
-        this.location.setAddress(command.address());
-        this.location.setNumDirection(command.numDirection());
-        this.location.setStreet(command.street());
-        this.location.setDistrict(command.district());
-        this.location.setCity(command.city());
-        this.location.setLatitude(command.latitude());
-        this.location.setLongitude(command.longitude());
+        this.location.setAddress(command.location().address());
+        this.location.setNumDirection(command.location().numDirection());
+        this.location.setStreet(command.location().street());
+        this.location.setDistrict(command.location().district());
+        this.location.setCity(command.location().city());
+        this.location.setLatitude(command.location().latitude());
+        this.location.setLongitude(command.location().longitude());
         this.location.setParking(this);
     }
 
@@ -83,13 +80,13 @@ public class Parking {
         this.space = command.space();
         this.description = command.description();
 
-        this.location.setAddress(command.address());
-        this.location.setNumDirection(command.numDirection());
-        this.location.setStreet(command.street());
-        this.location.setDistrict(command.district());
-        this.location.setCity(command.city());
-        this.location.setLatitude(command.latitude());
-        this.location.setLongitude(command.longitude());
+        this.location.setAddress(command.location().address());
+        this.location.setNumDirection(command.location().numDirection());
+        this.location.setStreet(command.location().street());
+        this.location.setDistrict(command.location().district());
+        this.location.setCity(command.location().city());
+        this.location.setLatitude(command.location().latitude());
+        this.location.setLongitude(command.location().longitude());
         this.location.setParking(this);
     }
 }
