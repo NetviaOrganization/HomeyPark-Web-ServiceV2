@@ -43,10 +43,6 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
         if (!externalVehicleService.checkVehicleExistById(command.vehicleId())) throw new VehicleNotFoundException();
         if (!externalParkingService.checkParkingExistById(command.parkingId())) throw new ParkingNotFoundException();
 
-        if (!externalScheduleService.doesScheduleEncloseTimeRange(command.reservationDate().getDayOfWeek().name(), command.startTime(), command.endTime())) {
-            throw new ScheduleConflictException();
-        }
-
         List<Status> blockedStatuses = List.of(Status.Approved, Status.InProgress, Status.Completed);
 
         if (reservationRepository.existsByOverlapWithStatus(

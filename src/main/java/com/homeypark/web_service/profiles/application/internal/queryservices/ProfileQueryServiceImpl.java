@@ -2,7 +2,8 @@ package com.homeypark.web_service.profiles.application.internal.queryservices;
 
 import com.homeypark.web_service.profiles.domain.model.aggregates.Profile;
 import com.homeypark.web_service.profiles.domain.model.queries.GetAllProfilesQuery;
-import com.homeypark.web_service.profiles.domain.model.queries.GetProfileByIdQuery;
+import com.homeypark.web_service.profiles.domain.model.queries.GetProfileByUserIdQuery;
+import com.homeypark.web_service.profiles.domain.model.valueobject.UserId;
 import com.homeypark.web_service.profiles.domain.services.ProfileQueryService;
 import com.homeypark.web_service.profiles.infrastructure.persistence.repositories.jpa.ProfileRepository;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,9 @@ public class ProfileQueryServiceImpl implements ProfileQueryService {
     }
 
     @Override
-    public Optional<Profile> handle(GetProfileByIdQuery query)
+    public Optional<Profile> handle(GetProfileByUserIdQuery query)
     {
-        return profileRepository.findById(query.userId());
+        return profileRepository.findProfileByUserId(new UserId(query.userId()));
     }
 
     @Override

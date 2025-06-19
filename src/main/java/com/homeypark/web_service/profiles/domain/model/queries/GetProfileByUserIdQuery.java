@@ -1,3 +1,3 @@
 package com.homeypark.web_service.profiles.domain.model.queries;
 
-public record GetProfileByIdQuery(Long userId) {}
+public record GetProfileByUserIdQuery(Long userId) {}

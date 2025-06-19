@@ -1,7 +1,7 @@
 package com.homeypark.web_service.profiles.application.acl;
 
 import com.homeypark.web_service.profiles.domain.model.commands.CreateProfileCommand;
-import com.homeypark.web_service.profiles.domain.model.queries.GetProfileByIdQuery;
+import com.homeypark.web_service.profiles.domain.model.queries.GetProfileByUserIdQuery;
 import com.homeypark.web_service.profiles.domain.services.ProfileCommandService;
 import com.homeypark.web_service.profiles.domain.services.ProfileQueryService;
 import com.homeypark.web_service.profiles.interfaces.acl.ProfileContextFacade;
@@ -22,7 +22,7 @@ public class ProfileContextFacadeImpl implements ProfileContextFacade {
 
     @Override
     public boolean checkProfileExistById(Long profileId) {
-        var getProfileByIdQuery = new GetProfileByIdQuery(profileId);
+        var getProfileByIdQuery = new GetProfileByUserIdQuery(profileId);
         var profile = profileQueryService.handle(getProfileByIdQuery);
         return profile.isPresent();
     }

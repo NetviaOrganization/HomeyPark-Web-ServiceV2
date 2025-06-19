@@ -4,7 +4,7 @@ package com.homeypark.web_service.profiles.interfaces.rest;
 
 import com.homeypark.web_service.profiles.domain.model.commands.DeleteProfileCommand;
 import com.homeypark.web_service.profiles.domain.model.queries.GetAllProfilesQuery;
-import com.homeypark.web_service.profiles.domain.model.queries.GetProfileByIdQuery;
+import com.homeypark.web_service.profiles.domain.model.queries.GetProfileByUserIdQuery;
 import com.homeypark.web_service.profiles.domain.services.ProfileCommandService;
 import com.homeypark.web_service.profiles.domain.services.ProfileQueryService;
 import com.homeypark.web_service.profiles.interfaces.rest.resources.CreateProfileResource;
@@ -42,10 +42,10 @@ public class ProfileController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProfileResource> getProfileById(@PathVariable("id") Long id) {
-        var getProfileByIdQuery = new GetProfileByIdQuery(id);
+    public ResponseEntity<ProfileResource> getProfileByUserId(@PathVariable("id") Long userId) {
+        var getProfileByUserIdQuery = new GetProfileByUserIdQuery(userId);
 
-        var profile = profileQueryService.handle(getProfileByIdQuery).map(ProfileResourceFromEntityAssembler::toResourceFromEntity);
+        var profile = profileQueryService.handle(getProfileByUserIdQuery).map(ProfileResourceFromEntityAssembler::toResourceFromEntity);
 
         return profile.map(u -> new ResponseEntity<>(u, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

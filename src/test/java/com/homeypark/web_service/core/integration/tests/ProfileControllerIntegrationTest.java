@@ -2,7 +2,7 @@ package com.homeypark.web_service.core.integration.tests;
 
 import com.homeypark.web_service.profiles.domain.model.aggregates.Profile;
 import com.homeypark.web_service.profiles.domain.model.commands.CreateProfileCommand;
-import com.homeypark.web_service.profiles.domain.model.queries.GetProfileByIdQuery;
+import com.homeypark.web_service.profiles.domain.model.queries.GetProfileByUserIdQuery;
 import com.homeypark.web_service.profiles.domain.services.ProfileCommandService;
 import com.homeypark.web_service.profiles.domain.services.ProfileQueryService;
 import com.homeypark.web_service.profiles.interfaces.rest.ProfileController;
@@ -53,13 +53,13 @@ public class ProfileControllerIntegrationTest {
 
     @Test
     void testGetProfileByIdSuccess() {
-        Long profileId = 1L;
+        Long userId = 1L;
         Profile profile = new Profile(new CreateProfileCommand("John", "Doe", LocalDate.of(1990, 1, 1), 1L));
 
-        Mockito.when(profileQueryService.handle(ArgumentMatchers.any(GetProfileByIdQuery.class)))
+        Mockito.when(profileQueryService.handle(ArgumentMatchers.any(GetProfileByUserIdQuery.class)))
                 .thenReturn(Optional.of(profile));
 
-        ResponseEntity<ProfileResource> response = profileController.getProfileById(profileId);
+        ResponseEntity<ProfileResource> response = profileController.getProfileByUserId(userId);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
