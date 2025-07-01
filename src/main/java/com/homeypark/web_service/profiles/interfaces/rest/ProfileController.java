@@ -9,10 +9,13 @@ import com.homeypark.web_service.profiles.domain.services.ProfileCommandService;
 import com.homeypark.web_service.profiles.domain.services.ProfileQueryService;
 import com.homeypark.web_service.profiles.interfaces.rest.resources.CreateProfileResource;
 import com.homeypark.web_service.profiles.interfaces.rest.resources.ProfileResource;
+import com.homeypark.web_service.profiles.interfaces.rest.resources.ProfileWithReputationResource;
 import com.homeypark.web_service.profiles.interfaces.rest.resources.UpdateProfileResource;
 import com.homeypark.web_service.profiles.interfaces.rest.transformers.CreateProfileCommandFromResourceAssembler;
 import com.homeypark.web_service.profiles.interfaces.rest.transformers.ProfileResourceFromEntityAssembler;
+import com.homeypark.web_service.profiles.interfaces.rest.transformers.ProfileWithReputationResourceFromEntityAssembler;
 import com.homeypark.web_service.profiles.interfaces.rest.transformers.UpdateProfileCommandFromResource;
+import com.homeypark.web_service.reservations.interfaces.acl.ReservationContextFacade;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +28,14 @@ import java.util.List;
 public class ProfileController {
     private final ProfileQueryService profileQueryService;
     private final ProfileCommandService profileCommandService;
+    private final ReservationContextFacade reservationContextFacade;
 
-    public ProfileController(ProfileQueryService profileQueryService, ProfileCommandService profileCommandService) {
+    public ProfileController(ProfileQueryService profileQueryService, 
+                           ProfileCommandService profileCommandService,
+                           ReservationContextFacade reservationContextFacade) {
         this.profileQueryService = profileQueryService;
         this.profileCommandService = profileCommandService;
+        this.reservationContextFacade = reservationContextFacade;
     }
 
     @GetMapping
@@ -74,4 +81,19 @@ public class ProfileController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/reputation/{id}")
+    public ResponseEntity<ProfileWithReputationResource> getProfileWithReputation(@PathVariable("id") Long userId) {
+        var getProfileByUserIdQuery = new GetProfileByUserIdQuery(userId);
+        var profileOptional = profileQueryService.handle(getProfileByUserIdQuery);
+        
+        if (profileOptional.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        var profile = profileOptional.get();
+        var reputation = reservationContextFacade.getUserReputationByUserId(userId);
+        var profileWithReputation = ProfileWithReputationResourceFromEntityAssembler.toResourceFromEntity(profile, reputation);
+        
+        return new ResponseEntity<>(profileWithReputation, HttpStatus.OK);
+    }
 }

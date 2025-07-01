@@ -9,6 +9,7 @@ import com.homeypark.web_service.profiles.interfaces.rest.ProfileController;
 import com.homeypark.web_service.profiles.interfaces.rest.resources.CreateProfileResource;
 import com.homeypark.web_service.profiles.interfaces.rest.resources.ProfileResource;
 import com.homeypark.web_service.profiles.interfaces.rest.transformers.CreateProfileCommandFromResourceAssembler;
+import com.homeypark.web_service.reservations.interfaces.acl.ReservationContextFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -25,13 +26,15 @@ public class ProfileControllerIntegrationTest {
 
     private ProfileCommandService profileCommandService;
     private ProfileQueryService profileQueryService;
+    private ReservationContextFacade reservationContextFacade;
     private ProfileController profileController;
 
     @BeforeEach
     void setUp() {
         profileQueryService = Mockito.mock(ProfileQueryService.class);
         profileCommandService = Mockito.mock(ProfileCommandService.class);
-        profileController = new ProfileController(profileQueryService, profileCommandService);
+        reservationContextFacade = Mockito.mock(ReservationContextFacade.class);
+        profileController = new ProfileController(profileQueryService, profileCommandService, reservationContextFacade); 
     }
 
     @Test

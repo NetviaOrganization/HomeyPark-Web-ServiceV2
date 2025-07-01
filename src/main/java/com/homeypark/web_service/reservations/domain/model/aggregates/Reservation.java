@@ -3,6 +3,7 @@ package com.homeypark.web_service.reservations.domain.model.aggregates;
 import com.homeypark.web_service.reservations.domain.model.commands.CreateReservationCommand;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateReservationCommand;
 import com.homeypark.web_service.reservations.domain.model.commands.UpdateStatusCommand;
+import com.homeypark.web_service.reservations.domain.model.entities.Review;
 import com.homeypark.web_service.reservations.domain.model.valueobject.*;
 import com.homeypark.web_service.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
@@ -49,6 +50,9 @@ public class Reservation extends AuditableAbstractAggregateRoot<Reservation> {
     @Embedded
     private VehicleId vehicleId;
 
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Review review;
+
     public Reservation(CreateReservationCommand command) {
         this.hoursRegistered = command.hoursRegistered();
         this.totalFare = command.totalFare();
@@ -72,6 +76,16 @@ public class Reservation extends AuditableAbstractAggregateRoot<Reservation> {
     public Reservation updatedStatus(UpdateStatusCommand command){
         this.status = command.status();
         return this;
+    }
+
+    // Método para verificar si la reserva puede ser reseñada
+    public boolean canBeReviewed() {
+        return this.status == Status.Completed;
+    }
+
+    // Método para verificar si ya tiene una reseña
+    public boolean hasReview() {
+        return this.review != null;
     }
 
 }

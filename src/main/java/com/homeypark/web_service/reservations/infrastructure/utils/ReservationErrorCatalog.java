@@ -15,6 +15,12 @@ public enum ReservationErrorCatalog {
     EMPTY_FILE("ERR_RESERVATION_007", "Empty file"),
     IMAGE_UPLOAD_ERROR("ERR_RESERVATION_008", "Image upload error"),
     RESERVATION_UPDATE_ERROR("ERR_RESERVATION_009", "Reservation update error"),
+    
+    // Review specific errors
+    REVIEW_NOT_FOUND("ERR_REVIEW_001", "Review not found"),
+    REVIEW_ALREADY_EXISTS("ERR_REVIEW_002", "Review already exists for this reservation"),
+    UNAUTHORIZED_REVIEW("ERR_REVIEW_003", "User not authorized to create/modify this review"),
+    INVALID_REVIEW_STATE("ERR_REVIEW_004", "Cannot create review for reservation that is not completed"),
 
 
     // invalid parameters
