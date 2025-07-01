@@ -28,6 +28,7 @@ public class Schedule extends AuditableModel {
     private Parking parking;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "day_of_week")
     private WeekDay day;
     private LocalTime startTime;
     private LocalTime endTime;

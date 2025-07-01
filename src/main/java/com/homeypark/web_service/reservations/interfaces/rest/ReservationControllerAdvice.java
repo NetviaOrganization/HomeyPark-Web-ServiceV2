@@ -57,6 +57,16 @@ public class ReservationControllerAdvice {
         return response;
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ReviewNotFoundException.class)
+    public ErrorResource handleReviewNotFoundException() {
+        ErrorResource response = new ErrorResource();
+        response.setCode("REVIEW_NOT_FOUND");
+        response.setMessage("Review not found");
+        response.setTimeStamp(LocalDateTime.now());
+        return response;
+    }
+
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ScheduleConflictException.class)
     public ErrorResource handleScheduleConflictException() {

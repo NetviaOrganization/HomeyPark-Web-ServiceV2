@@ -82,7 +82,7 @@ public class ReviewController {
         var updatedReview = reviewCommandService.handle(updateReviewCommand)
                 .map(ReviewResourceFromEntityAssembler::toResourceFromEntity);
         return updatedReview.map(r -> new ResponseEntity<>(r, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
     
     @DeleteMapping("/{id}")
